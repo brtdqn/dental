@@ -149,7 +149,7 @@ export default function LabProfilePage() {
                               <h5 className="font-bold text-slate-900 dark:text-slate-100">Dr. Mehmet Yılmaz</h5>
                               <span className="text-amber-500 font-bold text-sm">⭐ 5.0</span>
                            </div>
-                           <p className="text-sm text-slate-500 dark:text-slate-400 italic">"İşçilik kalitesi ve iletişim hızı gerçekten çok başarılı. Özellikle estetik vakalarda çok güveniyorum."</p>
+                           <p className="text-sm text-slate-500 dark:text-slate-400 italic">&quot;İşçilik kalitesi ve iletişim hızı gerçekten çok başarılı. Özellikle estetik vakalarda çok güveniyorum.&quot;</p>
                            <div className="text-[10px] text-slate-400 dark:text-slate-500 font-bold mt-2 uppercase tracking-widest">1 Ay Önce</div>
                         </div>
                      </div>

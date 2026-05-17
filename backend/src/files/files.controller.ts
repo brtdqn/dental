@@ -1,4 +1,11 @@
-import { Controller, Post, UseInterceptors, UploadedFile, UseGuards, Param } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  UseInterceptors,
+  UploadedFile,
+  UseGuards,
+  Param,
+} from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { FilesService } from './files.service';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
@@ -25,7 +32,10 @@ export class FilesController {
       }),
     }),
   )
-  async uploadFile(@Param('orderId') orderId: string, @UploadedFile() file: Express.Multer.File) {
+  async uploadFile(
+    @Param('orderId') orderId: string,
+    @UploadedFile() file: Express.Multer.File,
+  ) {
     return this.filesService.saveFileData(orderId, file);
   }
 }

@@ -9,7 +9,9 @@ export class BidsService {
 
   async create(producerId: string, dto: CreateBidDto) {
     // Logic to check if user is a producer
-    const user = await this.prisma.user.findUnique({ where: { id: producerId } });
+    const user = await this.prisma.user.findUnique({
+      where: { id: producerId },
+    });
     if (user?.role !== 'PRODUCER') {
       throw new ForbiddenException('Only producers can bid');
     }
@@ -49,10 +51,10 @@ export class BidsService {
       }),
       this.prisma.order.update({
         where: { id: bid.orderId },
-        data: { 
+        data: {
           status: 'ACCEPTED',
           producerId: bid.producerId,
-          totalAmount: bid.amount 
+          totalAmount: bid.amount,
         },
       }),
     ]);

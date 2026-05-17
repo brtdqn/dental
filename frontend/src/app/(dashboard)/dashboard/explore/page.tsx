@@ -175,6 +175,7 @@ export default function ExplorePage() {
           <div className="text-xs font-bold text-slate-400 text-center mb-2">SPONSORLU</div>
           {ads.filter(a => a.position === 'RIGHT_SIDEBAR').map(ad => (
              <a key={ad.id} href={ad.linkUrl} target="_blank" rel="noreferrer" className="block rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all border border-slate-200 dark:border-slate-800">
+               {/* eslint-disable-next-line @next/next/no-img-element */}
                <img src={ad.imageUrl} alt="Advertisement" className="w-full object-cover" />
              </a>
           ))}

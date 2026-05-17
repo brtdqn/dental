@@ -24,6 +24,7 @@ function Model({ url, onError }: { url: string; onError: () => void }) {
           bytes[i] = binaryString.charCodeAt(i);
         }
         const geom = loader.parse(bytes.buffer);
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setGeometry(geom);
       } catch (e) {
         console.error("Failed to parse Data URI STL:", e);

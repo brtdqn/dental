@@ -11,18 +11,18 @@ export default function ProfilePage() {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState("general");
 
-  useEffect(() => {
-    if (!user) router.push("/login");
-  }, [user, router]);
-
-  if (!user) return null;
-
   const [notifPreferences, setNotifPreferences] = useState({
     orderUpdates: true,
     newBids: true,
     messages: true,
     marketing: false
   });
+
+  useEffect(() => {
+    if (!user) router.push("/login");
+  }, [user, router]);
+
+  if (!user) return null;
 
   return (
     <div className="max-w-5xl mx-auto animate-fade-in pb-20">

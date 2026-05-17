@@ -1,0 +1,126 @@
+﻿
+> frontend@0.1.0 lint
+> eslint
+
+
+C:\Users\berat\OneDrive\Masa├╝st├╝\DIS\frontend\src\app\(auth)\login\page.tsx
+  27:19  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\berat\OneDrive\Masa├╝st├╝\DIS\frontend\src\app\(auth)\register\page.tsx
+  34:19  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  50:19  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\berat\OneDrive\Masa├╝st├╝\DIS\frontend\src\app\(dashboard)\admin\page.tsx
+  12:34  error    Unexpected any. Specify a different type                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             @typescript-eslint/no-explicit-any
+  19:7   error    Error: Cannot access variable before it is declared
+
+`fetchAds` is accessed before it is declared, which prevents the earlier access from updating when this value changes over time.
+
+C:\Users\berat\OneDrive\Masa├╝st├╝\DIS\frontend\src\app\(dashboard)\admin\page.tsx:19:7
+  17 |       router.push("/dashboard");
+  18 |     } else {
+> 19 |       fetchAds();
+     |       ^^^^^^^^ `fetchAds` accessed before it is declared
+  20 |     }
+  21 |   }, [user, router]);
+  22 |
+
+C:\Users\berat\OneDrive\Masa├╝st├╝\DIS\frontend\src\app\(dashboard)\admin\page.tsx:23:3
+  21 |   }, [user, router]);
+  22 |
+> 23 |   const fetchAds = async () => {
+     |   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 24 |     try {
+     | ^^^^^^^^^
+> 25 |       const { data } = await api.get("/ads");
+     | ^^^^^^^^^
+> 26 |       setAds(data);
+     | ^^^^^^^^^
+> 27 |     } catch (err) {
+     | ^^^^^^^^^
+> 28 |       console.error(err);
+     | ^^^^^^^^^
+> 29 |     }
+     | ^^^^^^^^^
+> 30 |   };
+     | ^^^^^ `fetchAds` is declared here
+  31 |
+  32 |   const handleAdd = async (e: React.FormEvent) => {
+  33 |     e.preventDefault();  react-hooks/immutability
+  39:14  warning  'err' is defined but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      @typescript-eslint/no-unused-vars
+  49:14  warning  'err' is defined but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      @typescript-eslint/no-unused-vars
+  99:15  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              @next/next/no-img-element
+
+C:\Users\berat\OneDrive\Masa├╝st├╝\DIS\frontend\src\app\(dashboard)\dashboard\checkout\[id]\page.tsx
+  8:11  warning  'id' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\berat\OneDrive\Masa├╝st├╝\DIS\frontend\src\app\(dashboard)\dashboard\explore\[id]\page.tsx
+   13:34   error  Unexpected any. Specify a different type                         @typescript-eslint/no-explicit-any
+  152:93   error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+  152:196  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+
+C:\Users\berat\OneDrive\Masa├╝st├╝\DIS\frontend\src\app\(dashboard)\dashboard\explore\page.tsx
+    9:36  error    Unexpected any. Specify a different type                                                                                                                                                                                                                                                 @typescript-eslint/no-explicit-any
+   10:34  error    Unexpected any. Specify a different type                                                                                                                                                                                                                                                 @typescript-eslint/no-explicit-any
+   12:24  warning  'setSelectedSort' is assigned a value but never used                                                                                                                                                                                                                                     @typescript-eslint/no-unused-vars
+  178:16  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+C:\Users\berat\OneDrive\Masa├╝st├╝\DIS\frontend\src\app\(dashboard)\dashboard\page.tsx
+  10:11  warning  'user' is assigned a value but never used                        @typescript-eslint/no-unused-vars
+  11:52  error    Unexpected any. Specify a different type                         @typescript-eslint/no-explicit-any
+  41:23  error    `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`  react/no-unescaped-entities
+
+C:\Users\berat\OneDrive\Masa├╝st├╝\DIS\frontend\src\app\(dashboard)\dashboard\profile\page.tsx
+    6:10  warning  'toast' is defined but never used                                                                                            @typescript-eslint/no-unused-vars
+    7:10  warning  'User' is defined but never used                                                                                             @typescript-eslint/no-unused-vars
+    7:16  warning  'Settings' is defined but never used                                                                                         @typescript-eslint/no-unused-vars
+    7:26  warning  'Shield' is defined but never used                                                                                           @typescript-eslint/no-unused-vars
+    7:34  warning  'Bell' is defined but never used                                                                                             @typescript-eslint/no-unused-vars
+   20:51  error    React Hook "useState" is called conditionally. React Hooks must be called in the exact same order in every component render  react-hooks/rules-of-hooks
+  168:59  error    Unexpected any. Specify a different type                                                                                     @typescript-eslint/no-explicit-any
+
+C:\Users\berat\OneDrive\Masa├╝st├╝\DIS\frontend\src\app\(dashboard)\dashboard\wallet\page.tsx
+  10:19  warning  'setBalance' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\berat\OneDrive\Masa├╝st├╝\DIS\frontend\src\app\(dashboard)\layout.tsx
+  10:66  warning  'Menu' is defined but never used               @typescript-eslint/no-unused-vars
+  32:9   warning  'pathname' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\berat\OneDrive\Masa├╝st├╝\DIS\frontend\src\components\ThemeToggle.tsx
+  12:5  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+C:\Users\berat\OneDrive\Masa├╝st├╝\DIS\frontend\src\components\ThemeToggle.tsx:12:5
+  10 |
+  11 |   React.useEffect(() => {
+> 12 |     setMounted(true);
+     |     ^^^^^^^^^^ Avoid calling setState() directly within an effect
+  13 |   }, []);
+  14 |
+  15 |   if (!mounted) {  react-hooks/set-state-in-effect
+
+C:\Users\berat\OneDrive\Masa├╝st├╝\DIS\frontend\src\components\viewer\STLViewer.tsx
+  27:9  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+C:\Users\berat\OneDrive\Masa├╝st├╝\DIS\frontend\src\components\viewer\STLViewer.tsx:27:9
+  25 |         }
+  26 |         const geom = loader.parse(bytes.buffer);
+> 27 |         setGeometry(geom);
+     |         ^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  28 |       } catch (e) {
+  29 |         console.error("Failed to parse Data URI STL:", e);
+  30 |         onError();  react-hooks/set-state-in-effect
+
+Ô£û 31 problems (16 errors, 15 warnings)
+

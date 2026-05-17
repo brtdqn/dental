@@ -1,0 +1,76 @@
+﻿
+> backend@0.0.1 lint
+> eslint "{src,apps,libs,test}/**/*.ts" --fix
+
+
+C:\Users\berat\OneDrive\Masa├╝st├╝\DIS\backend\src\ads\ads.service.ts
+  10:36  error  Unsafe assignment of an `any` value  @typescript-eslint/no-unsafe-assignment
+
+C:\Users\berat\OneDrive\Masa├╝st├╝\DIS\backend\src\auth\auth.module.ts
+  14:7   error  Async method 'useFactory' has no 'await' expression  @typescript-eslint/require-await
+  17:11  error  Unsafe assignment of an `any` value                  @typescript-eslint/no-unsafe-assignment
+
+C:\Users\berat\OneDrive\Masa├╝st├╝\DIS\backend\src\auth\guards\jwt-auth.guard.ts
+  1:22  error  'ExecutionContext' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\berat\OneDrive\Masa├╝st├╝\DIS\backend\src\auth\strategies\jwt.strategy.ts
+  16:3   error  Async method 'validate' has no 'await' expression  @typescript-eslint/require-await
+  17:14  error  Unsafe assignment of an `any` value                @typescript-eslint/no-unsafe-assignment
+  17:30  error  Unsafe member access .sub on an `any` value        @typescript-eslint/no-unsafe-member-access
+  17:35  error  Unsafe assignment of an `any` value                @typescript-eslint/no-unsafe-assignment
+  17:50  error  Unsafe member access .email on an `any` value      @typescript-eslint/no-unsafe-member-access
+  17:57  error  Unsafe assignment of an `any` value                @typescript-eslint/no-unsafe-assignment
+  17:71  error  Unsafe member access .role on an `any` value       @typescript-eslint/no-unsafe-member-access
+
+C:\Users\berat\OneDrive\Masa├╝st├╝\DIS\backend\src\bids\bids.controller.ts
+  22:36  warning  Unsafe argument of type `any` assigned to a parameter of type `string`  @typescript-eslint/no-unsafe-argument
+  22:40  error    Unsafe member access .user on an `any` value                            @typescript-eslint/no-unsafe-member-access
+  32:43  warning  Unsafe argument of type `any` assigned to a parameter of type `string`  @typescript-eslint/no-unsafe-argument
+  32:47  error    Unsafe member access .user on an `any` value                            @typescript-eslint/no-unsafe-member-access
+
+C:\Users\berat\OneDrive\Masa├╝st├╝\DIS\backend\src\chat\chat.gateway.ts
+  11:10  error    'UseGuards' is defined but never used                                                                                                                               @typescript-eslint/no-unused-vars
+  12:10  error    'WsJwtGuard' is defined but never used                                                                                                                              @typescript-eslint/no-unused-vars
+  46:5   warning  Promises must be awaited, end with a call to .catch, end with a call to .then with a rejection handler or be explicitly marked as ignored with the `void` operator  @typescript-eslint/no-floating-promises
+
+C:\Users\berat\OneDrive\Masa├╝st├╝\DIS\backend\src\chat\guards\ws-jwt.guard.ts
+  11:13  error    Unsafe assignment of an `any` value                                     @typescript-eslint/no-unsafe-assignment
+  12:13  error    Unsafe assignment of an `any` value                                     @typescript-eslint/no-unsafe-assignment
+  13:16  error    Unsafe member access .handshake on an `any` value                       @typescript-eslint/no-unsafe-member-access
+  14:9   error    Unsafe call of an `any` typed value                                     @typescript-eslint/no-unsafe-call
+  14:16  error    Unsafe member access .handshake on an `any` value                       @typescript-eslint/no-unsafe-member-access
+  14:61  error    Unsafe member access [1] on an `any` value                              @typescript-eslint/no-unsafe-member-access
+  15:13  error    Unsafe assignment of an `any` value                                     @typescript-eslint/no-unsafe-assignment
+  15:57  warning  Unsafe argument of type `any` assigned to a parameter of type `string`  @typescript-eslint/no-unsafe-argument
+  16:7   error    Unsafe assignment of an `any` value                                     @typescript-eslint/no-unsafe-assignment
+  16:14  error    Unsafe member access .user on an `any` value                            @typescript-eslint/no-unsafe-member-access
+  18:14  error    'err' is defined but never used                                         @typescript-eslint/no-unused-vars
+
+C:\Users\berat\OneDrive\Masa├╝st├╝\DIS\backend\src\main.ts
+  21:1  warning  Promises must be awaited, end with a call to .catch, end with a call to .then with a rejection handler or be explicitly marked as ignored with the `void` operator  @typescript-eslint/no-floating-promises
+
+C:\Users\berat\OneDrive\Masa├╝st├╝\DIS\backend\src\notifications\notifications.gateway.ts
+  27:11  error  Unsafe assignment of an `any` value           @typescript-eslint/no-unsafe-assignment
+  27:27  error  Unsafe member access .user on an `any` value  @typescript-eslint/no-unsafe-member-access
+  28:5   error  Unsafe call of an `any` typed value           @typescript-eslint/no-unsafe-call
+  28:12  error  Unsafe member access .join on an `any` value  @typescript-eslint/no-unsafe-member-access
+  29:32  error  Unsafe assignment of an `any` value           @typescript-eslint/no-unsafe-assignment
+
+C:\Users\berat\OneDrive\Masa├╝st├╝\DIS\backend\src\orders\dto\order.dto.ts
+  7:3  error  'IsEnum' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\berat\OneDrive\Masa├╝st├╝\DIS\backend\src\orders\orders.controller.ts
+  47:51  warning  Unsafe argument of type `any` assigned to a parameter of type `string`  @typescript-eslint/no-unsafe-argument
+  47:55  error    Unsafe member access .user on an `any` value                            @typescript-eslint/no-unsafe-member-access
+  58:13  error    Unsafe member access .user on an `any` value                            @typescript-eslint/no-unsafe-member-access
+  59:48  warning  Unsafe argument of type `any` assigned to a parameter of type `string`  @typescript-eslint/no-unsafe-argument
+  59:52  error    Unsafe member access .user on an `any` value                            @typescript-eslint/no-unsafe-member-access
+
+C:\Users\berat\OneDrive\Masa├╝st├╝\DIS\backend\src\profiles\profiles.controller.ts
+  30:41  warning  Unsafe argument of type `any` assigned to a parameter of type `string`  @typescript-eslint/no-unsafe-argument
+  30:45  error    Unsafe member access .user on an `any` value                            @typescript-eslint/no-unsafe-member-access
+  36:40  warning  Unsafe argument of type `any` assigned to a parameter of type `string`  @typescript-eslint/no-unsafe-argument
+  36:44  error    Unsafe member access .user on an `any` value                            @typescript-eslint/no-unsafe-member-access
+
+Ô£û 45 problems (36 errors, 9 warnings)
+

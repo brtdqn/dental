@@ -12,14 +12,6 @@ export default function AdminPage() {
   const [ads, setAds] = useState<any[]>([]);
   const [form, setForm] = useState({ imageUrl: "", linkUrl: "", position: "RIGHT_SIDEBAR" });
 
-  useEffect(() => {
-    if (!user || user.role !== "ADMIN") {
-      router.push("/dashboard");
-    } else {
-      fetchAds();
-    }
-  }, [user, router]);
-
   const fetchAds = async () => {
     try {
       const { data } = await api.get("/ads");
@@ -28,6 +20,15 @@ export default function AdminPage() {
       console.error(err);
     }
   };
+
+  useEffect(() => {
+    if (!user || user.role !== "ADMIN") {
+      router.push("/dashboard");
+    } else {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      fetchAds();
+    }
+  }, [user, router]);
 
   const handleAdd = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -96,6 +97,7 @@ export default function AdminPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {ads.map((ad) => (
             <div key={ad.id} className="border border-slate-200 dark:border-slate-700 p-4 rounded-xl flex flex-col gap-4">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src={ad.imageUrl} alt="Ad" className="w-full h-32 object-cover rounded-lg" />
               <div className="flex justify-between items-center">
                 <span className="text-xs font-bold text-slate-500">{ad.position}</span>

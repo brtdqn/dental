@@ -1,4 +1,8 @@
-import { Injectable, UnauthorizedException, ConflictException } from '@nestjs/common';
+import {
+  Injectable,
+  UnauthorizedException,
+  ConflictException,
+} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { PrismaService } from '../prisma/prisma.service';
 import { RegisterDto, LoginDto } from './dto/auth.dto';
@@ -43,7 +47,9 @@ export class AuthService {
     });
 
     // TODO: Send this code via Nodemailer in the future.
-    console.log(`[EMAIL SIMULATION] Sending verification code ${verificationCode} to ${user.email}`);
+    console.log(
+      `[EMAIL SIMULATION] Sending verification code ${verificationCode} to ${user.email}`,
+    );
 
     return {
       message: 'Verification code sent',
@@ -55,14 +61,19 @@ export class AuthService {
     const user = await this.prisma.user.findUnique({ where: { email } });
     if (!user) throw new UnauthorizedException('User not found');
     if (user.isVerified) throw new ConflictException('Already verified');
-    if (user.verificationCode !== code) throw new UnauthorizedException('Invalid verification code');
+    if (user.verificationCode !== code)
+      throw new UnauthorizedException('Invalid verification code');
 
     const updatedUser = await this.prisma.user.update({
       where: { email },
       data: { isVerified: true, verificationCode: null },
     });
 
-    return this.generateTokens(updatedUser.id, updatedUser.email, updatedUser.role);
+    return this.generateTokens(
+      updatedUser.id,
+      updatedUser.email,
+      updatedUser.role,
+    );
   }
 
   async login(dto: LoginDto) {
@@ -89,7 +100,7 @@ export class AuthService {
 
   private async generateTokens(userId: string, email: string, role: string) {
     const payload = { sub: userId, email, role };
-    
+
     return {
       access_token: await this.jwtService.signAsync(payload),
       user: {

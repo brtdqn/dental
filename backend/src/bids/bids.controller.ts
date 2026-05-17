@@ -1,4 +1,13 @@
-import { Controller, Post, Body, Get, Param, Patch, UseGuards, Req } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  Get,
+  Param,
+  Patch,
+  UseGuards,
+  Req,
+} from '@nestjs/common';
 import { BidsService } from './bids.service';
 import { CreateBidDto } from './dto/bid.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';

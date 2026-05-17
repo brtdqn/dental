@@ -29,7 +29,7 @@ export class OrdersService {
   }
 
   async addFiles(orderId: string, files: Express.Multer.File[]) {
-    const fileData = files.map(file => ({
+    const fileData = files.map((file) => ({
       orderId,
       url: `/uploads/${file.filename}`,
       name: file.originalname,
@@ -46,10 +46,10 @@ export class OrdersService {
     return this.prisma.order.findMany({
       include: {
         customer: {
-          select: { profile: true, email: true }
+          select: { profile: true, email: true },
         },
         producer: {
-          select: { profile: true, email: true }
+          select: { profile: true, email: true },
         },
       },
     });
@@ -73,13 +73,17 @@ export class OrdersService {
     const order = await this.prisma.order.update({
       where: { id },
       data: { status },
-      include: { customer: true }
+      include: { customer: true },
     });
 
     // Notify customer
     const msg = `Siparişiniz (#${id.slice(0, 4)}) yeni duruma güncellendi: ${status}`;
-    const notification = await this.notificationsService.create(order.customerId, 'ORDER_UPDATE', msg);
-    
+    const notification = await this.notificationsService.create(
+      order.customerId,
+      'ORDER_UPDATE',
+      msg,
+    );
+
     // Emit real-time
     this.notificationsGateway.sendNotification(order.customerId, notification);
 

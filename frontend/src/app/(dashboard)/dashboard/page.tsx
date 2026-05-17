@@ -38,7 +38,7 @@ export default function DashboardPage() {
              🔥 HAFTANIN FIRSATI
            </div>
            <h1 className="text-4xl md:text-5xl font-black leading-tight">
-             Elite Lab'da Tüm Zirkonyum İşlerinde <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-yellow-300">%20 İndirim</span>
+             Elite Lab&apos;da Tüm Zirkonyum İşlerinde <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-yellow-300">%20 İndirim</span>
            </h1>
            <p className="text-slate-300 text-lg">Bu hafta sonuna kadar vereceğiniz tüm siparişlerde geçerlidir. Hemen teklif alın, fırsatı kaçırmayın.</p>
            <div className="flex gap-4 pt-2">
