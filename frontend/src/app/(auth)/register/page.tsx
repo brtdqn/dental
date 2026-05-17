@@ -54,14 +54,14 @@ export default function RegisterPage() {
     }
   };
 
-  if (isVerifying) {
+    if (isVerifying) {
     return (
-      <div className="bg-white p-8 rounded-3xl shadow-xl border border-slate-100 animate-fade-in">
+      <div className="bg-white dark:bg-slate-900 p-8 rounded-3xl shadow-xl border border-slate-100 dark:border-slate-800 animate-fade-in">
         <div className="mb-8 text-center">
-          <div className="w-12 h-12 bg-emerald-500 rounded-xl flex items-center justify-center mx-auto mb-4 shadow-lg shadow-emerald-100">
+          <div className="w-12 h-12 bg-emerald-500 rounded-xl flex items-center justify-center mx-auto mb-4 shadow-lg shadow-emerald-100 dark:shadow-emerald-900/20">
             <span className="text-white font-bold text-xl">✓</span>
           </div>
-          <h1 className="text-2xl font-bold text-slate-900">E-posta Onayı</h1>
+          <h1 className="text-2xl font-bold text-slate-900 dark:text-white">E-posta Onayı</h1>
           <p className="text-slate-500 text-sm mt-2">{registeredEmail} adresine gönderilen 6 haneli kodu giriniz.</p>
         </div>
 
@@ -79,7 +79,7 @@ export default function RegisterPage() {
               onChange={(e) => setVerificationCode(e.target.value)}
               required
               maxLength={6}
-              className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all bg-slate-50 text-center font-bold text-2xl tracking-[0.5em]"
+              className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white text-center font-bold text-2xl tracking-[0.5em]"
               placeholder="000000"
             />
           </div>
@@ -97,12 +97,12 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="bg-white p-8 rounded-3xl shadow-xl border border-slate-100">
+    <div className="bg-white dark:bg-slate-900 p-8 rounded-3xl shadow-xl border border-slate-100 dark:border-slate-800">
       <div className="mb-8 text-center">
-        <div className="w-12 h-12 bg-blue-600 rounded-xl flex items-center justify-center mx-auto mb-4 shadow-lg shadow-blue-100">
+        <div className="w-12 h-12 bg-blue-600 rounded-xl flex items-center justify-center mx-auto mb-4 shadow-lg shadow-blue-100 dark:shadow-blue-900/20">
           <span className="text-white font-bold text-xl">D</span>
         </div>
-        <h1 className="text-2xl font-bold text-slate-900">Aramıza Katılın</h1>
+        <h1 className="text-2xl font-bold text-slate-900 dark:text-white">Aramıza Katılın</h1>
         <p className="text-slate-500 text-sm mt-2">Hızlıca hesabınızı oluşturun</p>
       </div>
 
@@ -113,12 +113,12 @@ export default function RegisterPage() {
           </div>
         )}
 
-        <div className="grid grid-cols-2 gap-2 bg-slate-50 p-1 rounded-2xl border border-slate-100">
+        <div className="grid grid-cols-2 gap-2 bg-slate-50 dark:bg-slate-800/50 p-1 rounded-2xl border border-slate-100 dark:border-slate-700">
           <button
             type="button"
             onClick={() => setForm({ ...form, role: "CUSTOMER" })}
             className={`py-2 px-4 rounded-xl text-sm font-bold transition-all ${
-              form.role === "CUSTOMER" ? "bg-white text-blue-600 shadow-sm" : "text-slate-500 hover:text-slate-700"
+              form.role === "CUSTOMER" ? "bg-white dark:bg-slate-700 text-blue-600 dark:text-blue-400 shadow-sm" : "text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200"
             }`}
           >
             Diş Hekimi
@@ -127,7 +127,7 @@ export default function RegisterPage() {
             type="button"
             onClick={() => setForm({ ...form, role: "PRODUCER" })}
             className={`py-2 px-4 rounded-xl text-sm font-bold transition-all ${
-              form.role === "PRODUCER" ? "bg-white text-blue-600 shadow-sm" : "text-slate-500 hover:text-slate-700"
+              form.role === "PRODUCER" ? "bg-white dark:bg-slate-700 text-blue-600 dark:text-blue-400 shadow-sm" : "text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200"
             }`}
           >
             Teknisyen
@@ -135,38 +135,38 @@ export default function RegisterPage() {
         </div>
         
         <div className="space-y-2">
-          <label className="text-sm font-semibold text-slate-700 ml-1">Ad Soyad / Klinik Adı</label>
+          <label className="text-sm font-semibold text-slate-700 dark:text-slate-300 ml-1">Ad Soyad / Klinik Adı</label>
           <input
             type="text"
             value={form.fullName}
             onChange={(e) => setForm({ ...form, fullName: e.target.value })}
             required
-            className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all bg-slate-50 hover:bg-slate-100/50"
+            className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white hover:bg-slate-100/50 dark:hover:bg-slate-700/50"
             placeholder="Dr. Ahmet Yılmaz"
           />
         </div>
 
         <div className="space-y-2">
-          <label className="text-sm font-semibold text-slate-700 ml-1">E-posta</label>
+          <label className="text-sm font-semibold text-slate-700 dark:text-slate-300 ml-1">E-posta</label>
           <input
             type="email"
             value={form.email}
             onChange={(e) => setForm({ ...form, email: e.target.value })}
             required
-            className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all bg-slate-50 hover:bg-slate-100/50"
+            className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white hover:bg-slate-100/50 dark:hover:bg-slate-700/50"
             placeholder="örnek@klinik.com"
           />
         </div>
 
         <div className="space-y-2">
-          <label className="text-sm font-semibold text-slate-700 ml-1">Şifre</label>
+          <label className="text-sm font-semibold text-slate-700 dark:text-slate-300 ml-1">Şifre</label>
           <input
             type="password"
             value={form.password}
             onChange={(e) => setForm({ ...form, password: e.target.value })}
             required
             minLength={6}
-            className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all bg-slate-50 hover:bg-slate-100/50"
+            className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white hover:bg-slate-100/50 dark:hover:bg-slate-700/50"
             placeholder="••••••••"
           />
         </div>
@@ -180,8 +180,8 @@ export default function RegisterPage() {
         </button>
       </form>
 
-      <div className="mt-8 pt-8 border-t border-slate-100 text-center">
-        <p className="text-sm text-slate-500">
+      <div className="mt-8 pt-8 border-t border-slate-100 dark:border-slate-800 text-center">
+        <p className="text-sm text-slate-500 dark:text-slate-400">
           Zaten hesabınız var mı?{" "}
           <Link href="/login" className="text-blue-600 font-bold hover:underline">
             Giriş Yapın
