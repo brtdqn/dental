@@ -3,16 +3,27 @@
 import { useAuthStore } from "@/store/useAuthStore";
 import Link from "next/link";
 import { ArrowRight, Star, Clock, ShieldCheck, ChevronRight } from "lucide-react";
+import { useState, useEffect } from "react";
+import api from "@/lib/api/axios";
 
 export default function DashboardPage() {
   const { user } = useAuthStore();
+  const [featuredLabs, setFeaturedLabs] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const featuredLabs = [
-    { id: 1, name: "Elite Dental Studio", rating: 4.9, reviews: 128, delivery: "3 Gün", tags: ["Zirkonyum", "Emax"], isPro: true, image: "🦷" },
-    { id: 2, name: "Modern Diş Lab", rating: 4.8, reviews: 85, delivery: "2 Gün", tags: ["İmplant Üstü"], isPro: false, image: "✨" },
-    { id: 3, name: "ProSmile Dijital", rating: 5.0, reviews: 42, delivery: "Hızlı", tags: ["Gülüş Tasarımı", "Lamine"], isPro: true, image: "👄" },
-    { id: 4, name: "Anadolu Seramik", rating: 4.7, reviews: 210, delivery: "4 Gün", tags: ["Porselen", "İskelet"], isPro: false, image: "🔧" },
-  ];
+  useEffect(() => {
+    const fetchLabs = async () => {
+      try {
+        const res = await api.get("/profiles/producers");
+        setFeaturedLabs(res.data);
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchLabs();
+  }, []);
 
   return (
     <div className="space-y-12 pb-20 animate-fade-in">
@@ -87,50 +98,58 @@ export default function DashboardPage() {
           </Link>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {featuredLabs.map((lab) => (
-            <div key={lab.id} className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-100 dark:border-slate-800 shadow-sm hover:shadow-xl hover:border-orange-500/30 transition-all group overflow-hidden flex flex-col relative">
-              {lab.isPro && (
-                <div className="absolute top-4 left-4 bg-orange-500 text-white text-[10px] font-black px-2 py-1 rounded-md z-10 shadow-lg">
-                  PRO
+        {loading ? (
+          <div className="flex justify-center items-center h-40">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-orange-500"></div>
+          </div>
+        ) : featuredLabs.length === 0 ? (
+          <div className="bg-slate-50 dark:bg-slate-800/50 rounded-3xl p-10 text-center border border-slate-100 dark:border-slate-800">
+            <div className="text-4xl mb-4 opacity-50">🏢</div>
+            <h3 className="text-lg font-bold text-slate-900 dark:text-white">Henüz Laboratuvar Bulunmuyor</h3>
+            <p className="text-slate-500 mt-2">Platforma yeni laboratuvarlar katıldığında burada listelenecektir.</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {featuredLabs.map((lab) => (
+              <div key={lab.id} className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-100 dark:border-slate-800 shadow-sm hover:shadow-xl hover:border-orange-500/30 transition-all group overflow-hidden flex flex-col relative">
+                {lab.profile?.isVerified && (
+                  <div className="absolute top-4 left-4 bg-emerald-500 text-white text-[10px] font-black px-2 py-1 rounded-md z-10 shadow-lg">
+                    ONAYLI
+                  </div>
+                )}
+                <div className="h-40 bg-slate-50 dark:bg-slate-800/50 flex items-center justify-center text-6xl relative overflow-hidden">
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+                  <span className="group-hover:scale-110 transition-transform duration-500 relative z-10">🦷</span>
                 </div>
-              )}
-              <div className="h-40 bg-slate-50 dark:bg-slate-800/50 flex items-center justify-center text-6xl relative overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
-                <span className="group-hover:scale-110 transition-transform duration-500 relative z-10">{lab.image}</span>
-              </div>
-              <div className="p-5 space-y-3 flex-grow flex flex-col justify-between">
-                <div>
-                  <h3 className="font-bold text-slate-900 dark:text-white text-lg truncate group-hover:text-orange-500 transition-colors">{lab.name}</h3>
-                  <div className="flex items-center gap-2 mt-1">
-                    <div className="flex items-center text-amber-500 text-sm font-bold">
-                      <Star size={14} className="fill-amber-500 mr-1" />
-                      {lab.rating}
+                <div className="p-5 space-y-3 flex-grow flex flex-col justify-between">
+                  <div>
+                    <h3 className="font-bold text-slate-900 dark:text-white text-lg truncate group-hover:text-orange-500 transition-colors">{lab.profile?.fullName || lab.email}</h3>
+                    <div className="flex items-center gap-2 mt-1">
+                      <div className="flex items-center text-amber-500 text-sm font-bold">
+                        <Star size={14} className="fill-amber-500 mr-1" />
+                        {lab.profile?.rating?.toFixed(1) || "0.0"}
+                      </div>
                     </div>
-                    <span className="text-xs text-slate-400">({lab.reviews})</span>
+                  </div>
+                  
+                  <div className="flex flex-wrap gap-1">
+                    {lab.profile?.specialties?.map((tag: string) => (
+                      <span key={tag} className="text-[10px] px-2 py-1 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 rounded-md font-medium">
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+
+                  <div className="pt-4 border-t border-slate-50 dark:border-slate-800/50 flex items-center justify-between">
+                     <Link href={`/dashboard/orders/new?producerId=${lab.id}`} className="bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-4 py-2 rounded-xl text-xs font-bold hover:bg-orange-500 dark:hover:bg-orange-500 hover:text-white transition-colors w-full text-center">
+                       İş Gönder
+                     </Link>
                   </div>
                 </div>
-                
-                <div className="flex flex-wrap gap-1">
-                  {lab.tags.map(tag => (
-                    <span key={tag} className="text-[10px] px-2 py-1 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 rounded-md font-medium">
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-
-                <div className="pt-4 border-t border-slate-50 dark:border-slate-800/50 flex items-center justify-between">
-                   <div className="text-xs font-bold text-slate-500">
-                     Teslimat: <span className="text-slate-900 dark:text-white">{lab.delivery}</span>
-                   </div>
-                   <Link href={`/dashboard/orders/new?producerId=${lab.id}`} className="bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-4 py-2 rounded-xl text-xs font-bold hover:bg-orange-500 dark:hover:bg-orange-500 hover:text-white transition-colors">
-                     İş Gönder
-                   </Link>
-                </div>
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
       </div>
 
       {/* Quick Access / Banners */}

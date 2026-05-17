@@ -15,6 +15,9 @@ export default function RegisterPage() {
   });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [isVerifying, setIsVerifying] = useState(false);
+  const [verificationCode, setVerificationCode] = useState("");
+  const [registeredEmail, setRegisteredEmail] = useState("");
   
   const router = useRouter();
   const setAuth = useAuthStore((state) => state.setAuth);
@@ -26,14 +29,72 @@ export default function RegisterPage() {
 
     try {
       const response = await api.post("/auth/register", form);
-      setAuth(response.data.user, response.data.access_token);
-      router.push("/dashboard");
+      setRegisteredEmail(response.data.email);
+      setIsVerifying(true);
     } catch (err: any) {
       setError(err.response?.data?.message || "Kayıt sırasında bir hata oluştu.");
     } finally {
       setLoading(false);
     }
   };
+
+  const handleVerify = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setError("");
+
+    try {
+      const response = await api.post("/auth/verify", { email: registeredEmail, code: verificationCode });
+      setAuth(response.data.user, response.data.access_token);
+      router.push("/dashboard");
+    } catch (err: any) {
+      setError(err.response?.data?.message || "Doğrulama kodu hatalı.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (isVerifying) {
+    return (
+      <div className="bg-white p-8 rounded-3xl shadow-xl border border-slate-100 animate-fade-in">
+        <div className="mb-8 text-center">
+          <div className="w-12 h-12 bg-emerald-500 rounded-xl flex items-center justify-center mx-auto mb-4 shadow-lg shadow-emerald-100">
+            <span className="text-white font-bold text-xl">✓</span>
+          </div>
+          <h1 className="text-2xl font-bold text-slate-900">E-posta Onayı</h1>
+          <p className="text-slate-500 text-sm mt-2">{registeredEmail} adresine gönderilen 6 haneli kodu giriniz.</p>
+        </div>
+
+        <form onSubmit={handleVerify} className="space-y-5">
+          {error && (
+            <div className="bg-red-50 border border-red-100 text-red-600 px-4 py-3 rounded-xl text-sm font-medium">
+              {error}
+            </div>
+          )}
+
+          <div className="space-y-2">
+            <input
+              type="text"
+              value={verificationCode}
+              onChange={(e) => setVerificationCode(e.target.value)}
+              required
+              maxLength={6}
+              className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all bg-slate-50 text-center font-bold text-2xl tracking-[0.5em]"
+              placeholder="000000"
+            />
+          </div>
+
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full bg-slate-900 text-white py-3.5 rounded-2xl font-bold hover:bg-slate-800 transition-all shadow-lg active:scale-95 disabled:opacity-50"
+          >
+            {loading ? "Doğrulanıyor..." : "Hesabı Onayla"}
+          </button>
+        </form>
+      </div>
+    );
+  }
 
   return (
     <div className="bg-white p-8 rounded-3xl shadow-xl border border-slate-100">

@@ -12,6 +12,7 @@ import { ProfilesModule } from './profiles/profiles.module';
 import { FilesModule } from './files/files.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
+import { AdsModule } from './ads/ads.module';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { join } from 'path';
     NotificationsModule,
     ProfilesModule,
     FilesModule,
+    AdsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

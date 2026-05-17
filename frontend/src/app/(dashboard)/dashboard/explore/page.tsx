@@ -7,21 +7,26 @@ import { Star, Filter, ChevronDown, Check, Search } from "lucide-react";
 
 export default function ExplorePage() {
   const [labs, setLabs] = useState<any[]>([]);
+  const [ads, setAds] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedSort, setSelectedSort] = useState("Önerilen Sıralama");
   
   useEffect(() => {
-    const fetchLabs = async () => {
+    const fetchLabsAndAds = async () => {
       try {
-        const { data } = await api.get("/profiles");
-        setLabs(data.filter((p: any) => p.user?.role === "PRODUCER"));
+        const [labsRes, adsRes] = await Promise.all([
+          api.get("/profiles/producers"),
+          api.get("/ads").catch(() => ({ data: [] }))
+        ]);
+        setLabs(labsRes.data);
+        setAds(adsRes.data);
       } catch (error) {
         console.error("Failed to fetch labs:", error);
       } finally {
         setLoading(false);
       }
     };
-    fetchLabs();
+    fetchLabsAndAds();
   }, []);
 
   const FILTERS = {
@@ -100,7 +105,7 @@ export default function ExplorePage() {
          
          <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-4 mb-6 flex flex-col sm:flex-row justify-between items-center gap-4">
             <div className="text-sm text-slate-500 dark:text-slate-400">
-               <span className="font-bold text-slate-900 dark:text-white">{labs.length || 12}</span> laboratuvar bulundu
+               <span className="font-bold text-slate-900 dark:text-white">{labs.length}</span> laboratuvar bulundu
             </div>
             <div className="flex items-center gap-2 text-sm">
                <span className="text-slate-500">Sırala:</span>
@@ -123,26 +128,25 @@ export default function ExplorePage() {
                {labs.length > 0 ? labs.map((lab) => (
                   <div key={lab.id} className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 hover:border-orange-500 dark:hover:border-orange-500 hover:shadow-xl transition-all group overflow-hidden flex flex-col">
                      <div className="h-48 bg-slate-50 dark:bg-slate-800/50 flex items-center justify-center text-7xl relative overflow-hidden">
-                        <span className="group-hover:scale-110 transition-transform duration-500 relative z-10">{lab.fullName?.[0] || "🦷"}</span>
-                        {/* Dummy badge */}
-                        {Math.random() > 0.5 && (
-                          <div className="absolute top-3 left-3 bg-red-500 text-white text-[10px] font-black px-2 py-1 rounded-md z-10">
-                            KARGO BEDAVA
+                        <span className="group-hover:scale-110 transition-transform duration-500 relative z-10">🦷</span>
+                        {lab.profile?.isVerified && (
+                          <div className="absolute top-3 left-3 bg-emerald-500 text-white text-[10px] font-black px-2 py-1 rounded-md z-10">
+                            ONAYLI
                           </div>
                         )}
                      </div>
                      <div className="p-5 flex flex-col flex-grow">
                         <Link href={`/dashboard/explore/${lab.id}`} className="font-bold text-slate-900 dark:text-white text-lg truncate hover:text-orange-500 transition-colors">
-                           {lab.fullName || lab.user?.email}
+                           {lab.profile?.fullName || lab.email}
                         </Link>
-                        <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 truncate">{lab.clinicName || "Bağımsız Laboratuvar"}</p>
+                        <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 truncate">{lab.profile?.clinicName || "Bağımsız Laboratuvar"}</p>
                         
                         <div className="flex items-center gap-2 mt-3">
                            <div className="flex items-center text-amber-500 text-sm font-bold">
                               <Star size={14} className="fill-amber-500 mr-1" />
-                              {lab.rating || "5.0"}
+                              {lab.profile?.rating?.toFixed(1) || "0.0"}
                            </div>
-                           <span className="text-xs text-slate-400">({Math.floor(Math.random() * 200) + 10} Değerlendirme)</span>
+                           <span className="text-xs text-slate-400">({lab.profile?.reviews || 0} Değerlendirme)</span>
                         </div>
 
                         <div className="mt-4 pt-4 border-t border-slate-100 dark:border-slate-800 flex items-end justify-between mt-auto">
@@ -164,6 +168,18 @@ export default function ExplorePage() {
             </div>
          )}
       </div>
+
+      {/* Right Sidebar (Ads) */}
+      {ads.length > 0 && (
+        <aside className="hidden xl:block w-64 flex-shrink-0 space-y-6 sticky top-24 h-fit">
+          <div className="text-xs font-bold text-slate-400 text-center mb-2">SPONSORLU</div>
+          {ads.filter(a => a.position === 'RIGHT_SIDEBAR').map(ad => (
+             <a key={ad.id} href={ad.linkUrl} target="_blank" rel="noreferrer" className="block rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all border border-slate-200 dark:border-slate-800">
+               <img src={ad.imageUrl} alt="Advertisement" className="w-full object-cover" />
+             </a>
+          ))}
+        </aside>
+      )}
     </div>
   );
 }

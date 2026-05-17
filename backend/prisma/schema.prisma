@@ -45,6 +45,8 @@ model User {
   receivedMessages Message[] @relation("ReceivedMessages")
   bids             Bid[]
   notifications    Notification[]
+  isVerified       Boolean   @default(false)
+  verificationCode String?
   createdAt        DateTime  @default(now())
   updatedAt        DateTime  @updatedAt
 }
@@ -141,4 +143,14 @@ model Notification {
   message   String
   read      Boolean  @default(false)
   createdAt DateTime @default(now())
+}
+
+model Ad {
+  id        String   @id @default(uuid())
+  imageUrl  String
+  linkUrl   String
+  position  String   // LEFT_SIDEBAR, RIGHT_SIDEBAR, HERO
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

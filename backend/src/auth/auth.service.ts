@@ -3,6 +3,7 @@ import { JwtService } from '@nestjs/jwt';
 import { PrismaService } from '../prisma/prisma.service';
 import { RegisterDto, LoginDto } from './dto/auth.dto';
 import * as bcrypt from 'bcrypt';
+import * as crypto from 'crypto';
 
 @Injectable()
 export class AuthService {
@@ -21,12 +22,15 @@ export class AuthService {
     }
 
     const hashedPassword = await bcrypt.hash(dto.password, 10);
+    const verificationCode = crypto.randomInt(100000, 999999).toString();
 
     const user = await this.prisma.user.create({
       data: {
         email: dto.email,
         password: hashedPassword,
         role: dto.role,
+        isVerified: false,
+        verificationCode,
         profile: {
           create: {
             fullName: dto.fullName,
@@ -38,7 +42,27 @@ export class AuthService {
       },
     });
 
-    return this.generateTokens(user.id, user.email, user.role);
+    // TODO: Send this code via Nodemailer in the future.
+    console.log(`[EMAIL SIMULATION] Sending verification code ${verificationCode} to ${user.email}`);
+
+    return {
+      message: 'Verification code sent',
+      email: user.email,
+    };
+  }
+
+  async verifyEmail(email: string, code: string) {
+    const user = await this.prisma.user.findUnique({ where: { email } });
+    if (!user) throw new UnauthorizedException('User not found');
+    if (user.isVerified) throw new ConflictException('Already verified');
+    if (user.verificationCode !== code) throw new UnauthorizedException('Invalid verification code');
+
+    const updatedUser = await this.prisma.user.update({
+      where: { email },
+      data: { isVerified: true, verificationCode: null },
+    });
+
+    return this.generateTokens(updatedUser.id, updatedUser.email, updatedUser.role);
   }
 
   async login(dto: LoginDto) {
@@ -48,6 +72,10 @@ export class AuthService {
 
     if (!user) {
       throw new UnauthorizedException('Invalid credentials');
+    }
+
+    if (!user.isVerified) {
+      throw new UnauthorizedException('Please verify your email first');
     }
 
     const isPasswordValid = await bcrypt.compare(dto.password, user.password);
