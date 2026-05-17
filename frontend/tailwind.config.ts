@@ -12,34 +12,38 @@ module.exports = {
         background: "var(--background)",
         foreground: "var(--foreground)",
         primary: {
-          DEFAULT: "#0052CC",
+          DEFAULT: "#F97316",
           foreground: "#FFFFFF",
         },
         secondary: {
-          DEFAULT: "#00A3BF",
+          DEFAULT: "#0EA5E9",
           foreground: "#FFFFFF",
         },
-        slate: {
-          50: "#F8FAFC",
-          100: "#F1F5F9",
-          200: "#E2E8F0",
-          800: "#1E293B",
-          900: "#0F172A",
-        }
       },
       borderRadius: {
         '3xl': '1.5rem',
         '4xl': '2rem',
       },
       animation: {
-        'fade-in': 'fadeIn 0.8s ease-out forwards',
+        'fade-in': 'fadeIn 0.5s ease-out forwards',
+        'slide-up': 'slideUp 0.4s ease-out forwards',
+        'shake': 'shake 0.4s ease-in-out',
       },
       keyframes: {
         fadeIn: {
-          '0%': { opacity: '0', transform: 'translateY(10px)' },
+          '0%': { opacity: '0', transform: 'translateY(12px)' },
           '100%': { opacity: '1', transform: 'translateY(0)' },
-        }
-      }
+        },
+        slideUp: {
+          '0%': { opacity: '0', transform: 'translateY(20px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
+        shake: {
+          '0%, 100%': { transform: 'translateX(0)' },
+          '25%': { transform: 'translateX(-6px)' },
+          '75%': { transform: 'translateX(6px)' },
+        },
+      },
     },
   },
   plugins: [],
