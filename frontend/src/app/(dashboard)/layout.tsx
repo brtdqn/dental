@@ -7,7 +7,14 @@ import { useNotificationStore } from "@/store/useNotificationStore";
 import Link from "next/link";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { toast } from "sonner";
-import { Search, ShoppingCart, User, Bell, Package, ChevronDown, Menu, LogOut, Wallet } from "lucide-react";
+import { Search, ShoppingCart, User, Bell, Package, ChevronDown, LogOut, Wallet, CheckCheck } from "lucide-react";
+
+const MOCK_NOTIFICATIONS = [
+  { id: "n1", type: "bid",     icon: "💬", title: "Yeni Teklif",        message: "Elite Dental Studio zirkonyum işiniz için teklif gönderdi.",  time: "5 dk önce",  read: false, href: "/dashboard/orders/1" },
+  { id: "n2", type: "order",   icon: "📦", title: "Sipariş Güncellendi", message: "Emax Kron #4822 siparişiniz üretime alındı.",                 time: "1 saat önce", read: false, href: "/dashboard/orders/2" },
+  { id: "n3", type: "payment", icon: "💳", title: "Ödeme Onaylandı",     message: "₺4,500 tutarındaki ödemeniz başarıyla işlendi.",             time: "Dün",         read: true,  href: "/dashboard/wallet" },
+  { id: "n4", type: "system",  icon: "🎉", title: "Hoş Geldiniz!",       message: "Dental Pazar'a hoş geldiniz. İlk iş talebinizi oluşturun.",  time: "2 gün önce", read: true,  href: "/dashboard/orders/new" },
+];
 
 const CATEGORIES = [
   "Tüm Kategoriler",
@@ -33,6 +40,18 @@ export default function DashboardLayout({
   const [showNotifications, setShowNotifications] = useState(false);
   const [showAccountMenu, setShowAccountMenu] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [mockNotifs, setMockNotifs] = useState(MOCK_NOTIFICATIONS);
+
+  const unreadCount = mockNotifs.filter(n => !n.read).length;
+
+  const markAllRead = () => {
+    setMockNotifs(prev => prev.map(n => ({ ...n, read: true })));
+    toast.success("Tüm bildirimler okundu olarak işaretlendi.");
+  };
+
+  const markRead = (id: string) => {
+    setMockNotifs(prev => prev.map(n => n.id === id ? { ...n, read: true } : n));
+  };
 
   useEffect(() => {
     if (user) {
@@ -101,32 +120,46 @@ export default function DashboardLayout({
                  {/* Notifications */}
                  <div className="relative">
                    <button 
-                      onClick={() => setShowNotifications(!showNotifications)}
+                      onClick={() => { setShowNotifications(!showNotifications); setShowAccountMenu(false); }}
                       className="p-2.5 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all relative flex flex-col items-center gap-1 group"
                    >
                       <Bell size={20} className="group-hover:text-orange-500 transition-colors" />
-                      {notifications.length > 0 && (
+                      {(unreadCount > 0 || notifications.length > 0) && (
                         <span className="absolute top-1 right-1 w-4 h-4 bg-red-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center border-2 border-white dark:border-slate-900">
-                          {notifications.length}
+                          {unreadCount || notifications.length}
                         </span>
                       )}
                    </button>
 
                    {showNotifications && (
-                     <div className="absolute top-14 right-0 w-80 bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-100 dark:border-slate-800 py-2 z-50">
+                     <div className="absolute top-14 right-0 w-80 bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-100 dark:border-slate-800 overflow-hidden z-50">
                        <div className="px-4 py-3 border-b border-slate-100 dark:border-slate-800 flex justify-between items-center">
-                          <h3 className="font-bold text-slate-900 dark:text-white">Bildirimler</h3>
-                          <button onClick={() => toast.success("Okundu işaretlendi")} className="text-xs text-orange-500 font-bold hover:underline">Tümünü Oku</button>
+                          <h3 className="font-black text-slate-900 dark:text-white text-sm">Bildirimler</h3>
+                          <button onClick={markAllRead} className="text-xs text-orange-500 font-bold hover:underline flex items-center gap-1">
+                            <CheckCheck size={12} /> Tümünü Oku
+                          </button>
                        </div>
-                       <div className="max-h-80 overflow-y-auto">
-                          {notifications.length > 0 ? notifications.map((n) => (
-                            <div key={n.id} className="p-4 hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer border-b border-slate-50 dark:border-slate-800/50">
-                               <p className="text-sm text-slate-700 dark:text-slate-300">{n.message}</p>
-                               <span className="text-[10px] text-slate-400 mt-1 block">Az önce</span>
-                            </div>
-                          )) : (
-                            <div className="p-8 text-center text-slate-400 text-sm">Yeni bildirim yok</div>
-                          )}
+                       <div className="max-h-80 overflow-y-auto divide-y divide-slate-50 dark:divide-slate-800/50">
+                          {mockNotifs.map(n => (
+                            <Link key={n.id} href={n.href} onClick={() => { markRead(n.id); setShowNotifications(false); }}
+                              className={`flex gap-3 px-4 py-3.5 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors ${!n.read ? "bg-orange-50/50 dark:bg-orange-500/5" : ""}`}>
+                              <div className="w-9 h-9 rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-lg flex-shrink-0">{n.icon}</div>
+                              <div className="flex-1 min-w-0">
+                                <div className="flex items-center gap-2">
+                                  <span className="text-xs font-black text-slate-900 dark:text-white">{n.title}</span>
+                                  {!n.read && <span className="w-2 h-2 bg-orange-500 rounded-full flex-shrink-0" />}
+                                </div>
+                                <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5 leading-relaxed line-clamp-2">{n.message}</p>
+                                <span className="text-[10px] text-slate-400 mt-1 block">{n.time}</span>
+                              </div>
+                            </Link>
+                          ))}
+                       </div>
+                       <div className="p-3 border-t border-slate-50 dark:border-slate-800">
+                         <Link href="/dashboard" onClick={() => setShowNotifications(false)}
+                           className="block text-center text-xs font-bold text-orange-500 hover:underline">
+                           Tüm Bildirimleri Gör
+                         </Link>
                        </div>
                      </div>
                    )}
