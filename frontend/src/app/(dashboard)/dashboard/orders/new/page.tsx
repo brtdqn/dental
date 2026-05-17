@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef, useCallback, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useAuthStore } from "@/store/useAuthStore";
 import { toast } from "sonner";
@@ -50,7 +50,7 @@ function StepBar({ step }: { step: number }) {
   );
 }
 
-export default function NewOrderPage() {
+function NewOrderContent() {
   const { user } = useAuthStore();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -363,5 +363,18 @@ export default function NewOrderPage() {
         </button>
       </div>
     </div>
+  );
+}
+
+export default function NewOrderPage() {
+  return (
+    <Suspense fallback={
+      <div className="flex flex-col items-center justify-center min-h-[400px] p-8 text-center text-slate-500 dark:text-slate-400">
+        <div className="w-8 h-8 border-4 border-orange-500/30 border-t-orange-500 rounded-full animate-spin mb-3"></div>
+        <p className="font-medium text-sm">Sayfa yükleniyor...</p>
+      </div>
+    }>
+      <NewOrderContent />
+    </Suspense>
   );
 }
