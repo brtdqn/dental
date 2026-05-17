@@ -1,30 +1,48 @@
 "use client";
 
 import { useParams } from "next/navigation";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import Link from "next/link";
 import STLViewer from "@/components/viewer/STLViewer";
+import api from "@/lib/api/axios";
 
 export default function LabProfilePage() {
   const { id } = useParams();
   const [activeTab, setActiveTab] = useState("portfolio");
+  const [loading, setLoading] = useState(true);
+  const [lab, setLab] = useState<any>(null);
 
-  const lab = {
-    name: "Elite Dental Studio",
-    location: "İstanbul, Şişli",
-    rating: 4.9,
-    reviewsCount: 128,
-    about: "20 yıllık tecrübemizle dijital diş hekimliği ve estetik zirkonyum çözümlerinde Türkiye'nin öncü laboratuvarlarından biriyiz. Exocad uzman kadromuzla en karmaşık vakalarda bile kusursuz sonuçlar sunuyoruz.",
-    stats: [
-      { label: "Tamamlanan İş", value: "2,500+" },
-      { label: "Ort. Teslimat", value: "3 Gün" },
-      { label: "Müşteri Memnuniyeti", value: "%99" },
-    ],
-    portfolio: [
-      { id: 1, title: "Zirkonyum All-on-4", img: "🦷", type: "IMAGE" },
-      { id: 2, title: "Emax Ön Bölge Estetik", img: "✨", type: "3D" },
-      { id: 3, title: "Dijital Gülüş Tasarımı", img: "👄", type: "IMAGE" },
-    ]
-  };
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const { data } = await api.get(`/profiles/${id}`);
+        setLab(data);
+      } catch (error) {
+        console.error("Failed to fetch lab profile:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchProfile();
+  }, [id]);
+
+  if (loading) {
+    return <div className="text-center py-20 font-bold text-slate-500">Yükleniyor...</div>;
+  }
+
+  if (!lab) {
+    return <div className="text-center py-20 font-bold text-red-500">Laboratuvar bulunamadı.</div>;
+  }
+
+  // Fallback defaults for missing stats/portfolio
+  const stats = [
+    { label: "Tamamlanan İş", value: "0" },
+    { label: "Değerlendirme", value: lab.rating || "0" },
+  ];
+  
+  const portfolio = [
+    { id: 1, title: "Örnek Çalışma 1", img: "🦷", type: "IMAGE" },
+  ];
 
   return (
     <div className="max-w-6xl mx-auto animate-fade-in pb-20">
@@ -33,17 +51,17 @@ export default function LabProfilePage() {
          <div className="h-48 bg-gradient-to-r from-blue-700 to-blue-500 relative">
             <div className="absolute -bottom-12 left-10 flex items-end gap-6">
                <div className="w-32 h-32 bg-white rounded-[32px] shadow-xl border-8 border-white flex items-center justify-center text-5xl font-black text-blue-600">
-                  {lab.name[0]}
+                  {lab.fullName?.[0] || lab.user?.email?.[0]?.toUpperCase()}
                </div>
                <div className="pb-4">
-                  <h1 className="text-3xl font-black text-slate-900">{lab.name}</h1>
-                  <p className="text-slate-500 font-medium">📍 {lab.location} • <span className="text-amber-500 font-bold">⭐ {lab.rating} ({lab.reviewsCount} Değerlendirme)</span></p>
+                  <h1 className="text-3xl font-black text-slate-900">{lab.fullName || lab.user?.email}</h1>
+                  <p className="text-slate-500 font-medium">📍 {lab.address || "Lokasyon Belirtilmemiş"} • <span className="text-amber-500 font-bold">⭐ {lab.rating || 0}</span></p>
                </div>
             </div>
          </div>
          <div className="pt-20 px-10 pb-10 flex justify-between items-center">
             <div className="flex gap-8">
-               {lab.stats.map((s, i) => (
+               {stats.map((s, i) => (
                  <div key={i}>
                     <div className="text-2xl font-black text-slate-900">{s.value}</div>
                     <div className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">{s.label}</div>
@@ -51,9 +69,9 @@ export default function LabProfilePage() {
                ))}
             </div>
             <div className="flex gap-3">
-               <button className="px-8 py-3 bg-blue-600 text-white rounded-2xl font-bold hover:bg-blue-700 transition-all shadow-lg shadow-blue-100">
+               <Link href={`/dashboard/orders/new?producerId=${id}`} className="px-8 py-3 bg-blue-600 text-white rounded-2xl font-bold hover:bg-blue-700 transition-all shadow-lg shadow-blue-100 flex items-center justify-center">
                   İş Talebi Gönder
-               </button>
+               </Link>
                <button className="p-3 bg-slate-50 rounded-2xl hover:bg-slate-100 transition-all text-xl">
                   💬
                </button>
@@ -66,12 +84,12 @@ export default function LabProfilePage() {
          <div className="space-y-8">
             <div className="bg-white p-8 rounded-[32px] border border-slate-100 shadow-sm space-y-4">
                <h3 className="text-lg font-bold text-slate-900">Hakkımızda</h3>
-               <p className="text-sm text-slate-600 leading-relaxed">{lab.about}</p>
+               <p className="text-sm text-slate-600 leading-relaxed">{lab.clinicName || "Bu laboratuvar henüz detaylı bir bilgi eklememiştir."}</p>
             </div>
             <div className="bg-white p-8 rounded-[32px] border border-slate-100 shadow-sm space-y-4">
                <h3 className="text-lg font-bold text-slate-900">Uzmanlık Alanları</h3>
                <div className="flex flex-wrap gap-2">
-                  {["Zirkonyum", "Emax", "İmplant Üstü", "Lamine", "Exocad"].map((tag) => (
+                  {(lab.specialties?.length ? lab.specialties : ["Genel Diş Teknisyenliği"]).map((tag: string) => (
                     <span key={tag} className="px-4 py-2 bg-blue-50 text-blue-600 text-xs font-bold rounded-xl border border-blue-100">
                        {tag}
                     </span>
@@ -99,7 +117,7 @@ export default function LabProfilePage() {
 
             {activeTab === "portfolio" && (
                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {lab.portfolio.map((item) => (
+                  {portfolio.map((item) => (
                      <div key={item.id} className="bg-white rounded-[32px] border border-slate-100 shadow-sm overflow-hidden group hover:shadow-lg transition-all">
                         <div className="aspect-square bg-slate-100 relative flex items-center justify-center text-6xl">
                            {item.type === "3D" ? (

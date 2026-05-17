@@ -9,9 +9,9 @@ interface Lab {
   email: string;
   profile?: {
     fullName: string;
-    city: string;
+    address: string;
     specialties: string[];
-    bio: string;
+    clinicName: string;
   };
 }
 
@@ -91,7 +91,7 @@ export default function ExplorePage() {
                 <div className="flex justify-between items-start">
                    <div>
                       <h3 className="font-bold text-slate-900 group-hover:text-blue-600 transition-colors">{lab.profile?.fullName || lab.email}</h3>
-                      <p className="text-xs text-slate-400 mt-1">📍 {lab.profile?.city || "Lokasyon Belirtilmemiş"}</p>
+                      <p className="text-xs text-slate-400 mt-1">📍 {lab.profile?.address || "Lokasyon Belirtilmemiş"}</p>
                    </div>
                    <div className="text-right">
                       <div className="text-amber-500 font-bold text-sm">⭐ 4.9</div>
@@ -121,9 +121,9 @@ export default function ExplorePage() {
                 <Link href={`/dashboard/explore/${lab.id}`} className="py-2.5 bg-white border border-slate-200 rounded-xl text-xs font-bold hover:bg-slate-100 transition-all text-center flex items-center justify-center">
                    Profili Gör
                 </Link>
-                <button className="py-2.5 bg-blue-600 text-white rounded-xl text-xs font-bold hover:bg-blue-700 transition-all shadow-lg shadow-blue-100">
+                <Link href={`/dashboard/orders/new?producerId=${lab.id}`} className="py-2.5 bg-blue-600 text-white rounded-xl text-xs font-bold hover:bg-blue-700 transition-all shadow-lg shadow-blue-100 text-center flex items-center justify-center">
                    İş Teklifi Gönder
-                </button>
+                </Link>
              </div>
           </div>
         ))}
