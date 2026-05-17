@@ -47,15 +47,15 @@ export default function LabProfilePage() {
   return (
     <div className="max-w-6xl mx-auto animate-fade-in pb-20">
       {/* Header Section */}
-      <div className="bg-white rounded-[40px] border border-slate-100 shadow-sm overflow-hidden mb-8">
+      <div className="bg-white dark:bg-slate-900 rounded-[40px] border border-slate-100 dark:border-slate-800 shadow-sm overflow-hidden mb-8 transition-colors">
          <div className="h-48 bg-gradient-to-r from-blue-700 to-blue-500 relative">
             <div className="absolute -bottom-12 left-10 flex items-end gap-6">
-               <div className="w-32 h-32 bg-white rounded-[32px] shadow-xl border-8 border-white flex items-center justify-center text-5xl font-black text-blue-600">
+               <div className="w-32 h-32 bg-white dark:bg-slate-800 rounded-[32px] shadow-xl border-8 border-white dark:border-slate-900 flex items-center justify-center text-5xl font-black text-blue-600 dark:text-blue-400 transition-colors">
                   {lab.fullName?.[0] || lab.user?.email?.[0]?.toUpperCase()}
                </div>
                <div className="pb-4">
-                  <h1 className="text-3xl font-black text-slate-900">{lab.fullName || lab.user?.email}</h1>
-                  <p className="text-slate-500 font-medium">📍 {lab.address || "Lokasyon Belirtilmemiş"} • <span className="text-amber-500 font-bold">⭐ {lab.rating || 0}</span></p>
+                  <h1 className="text-3xl font-black text-slate-900 dark:text-slate-100">{lab.fullName || lab.user?.email}</h1>
+                  <p className="text-slate-500 dark:text-slate-300 font-medium">📍 {lab.address || "Lokasyon Belirtilmemiş"} • <span className="text-amber-500 font-bold">⭐ {lab.rating || 0}</span></p>
                </div>
             </div>
          </div>
@@ -63,16 +63,16 @@ export default function LabProfilePage() {
             <div className="flex gap-8">
                {stats.map((s, i) => (
                  <div key={i}>
-                    <div className="text-2xl font-black text-slate-900">{s.value}</div>
+                    <div className="text-2xl font-black text-slate-900 dark:text-slate-100">{s.value}</div>
                     <div className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">{s.label}</div>
                  </div>
                ))}
             </div>
             <div className="flex gap-3">
-               <Link href={`/dashboard/orders/new?producerId=${id}`} className="px-8 py-3 bg-blue-600 text-white rounded-2xl font-bold hover:bg-blue-700 transition-all shadow-lg shadow-blue-100 flex items-center justify-center">
+               <Link href={`/dashboard/orders/new?producerId=${id}`} className="px-8 py-3 bg-blue-600 text-white rounded-2xl font-bold hover:bg-blue-700 transition-all shadow-lg shadow-blue-500/20 flex items-center justify-center">
                   İş Talebi Gönder
                </Link>
-               <button className="p-3 bg-slate-50 rounded-2xl hover:bg-slate-100 transition-all text-xl">
+               <button className="p-3 bg-slate-50 dark:bg-slate-800 rounded-2xl hover:bg-slate-100 dark:hover:bg-slate-700 transition-all text-xl">
                   💬
                </button>
             </div>
@@ -82,15 +82,15 @@ export default function LabProfilePage() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
          {/* Left Side: About & Info */}
          <div className="space-y-8">
-            <div className="bg-white p-8 rounded-[32px] border border-slate-100 shadow-sm space-y-4">
-               <h3 className="text-lg font-bold text-slate-900">Hakkımızda</h3>
-               <p className="text-sm text-slate-600 leading-relaxed">{lab.clinicName || "Bu laboratuvar henüz detaylı bir bilgi eklememiştir."}</p>
+            <div className="bg-white dark:bg-slate-900 p-8 rounded-[32px] border border-slate-100 dark:border-slate-800 shadow-sm space-y-4 transition-colors">
+               <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100">Hakkımızda</h3>
+               <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">{lab.clinicName || "Bu laboratuvar henüz detaylı bir bilgi eklememiştir."}</p>
             </div>
-            <div className="bg-white p-8 rounded-[32px] border border-slate-100 shadow-sm space-y-4">
-               <h3 className="text-lg font-bold text-slate-900">Uzmanlık Alanları</h3>
+            <div className="bg-white dark:bg-slate-900 p-8 rounded-[32px] border border-slate-100 dark:border-slate-800 shadow-sm space-y-4 transition-colors">
+               <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100">Uzmanlık Alanları</h3>
                <div className="flex flex-wrap gap-2">
                   {(lab.specialties?.length ? lab.specialties : ["Genel Diş Teknisyenliği"]).map((tag: string) => (
-                    <span key={tag} className="px-4 py-2 bg-blue-50 text-blue-600 text-xs font-bold rounded-xl border border-blue-100">
+                    <span key={tag} className="px-4 py-2 bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 text-xs font-bold rounded-xl border border-blue-100 dark:border-blue-500/20">
                        {tag}
                     </span>
                   ))}
@@ -100,7 +100,7 @@ export default function LabProfilePage() {
 
          {/* Right Side: Portfolio & Reviews */}
          <div className="lg:col-span-2 space-y-8">
-            <div className="flex gap-4 border-b border-slate-100 mb-6">
+            <div className="flex gap-4 border-b border-slate-100 dark:border-slate-800 mb-6 transition-colors">
                {["portfolio", "reviews"].map((t) => (
                  <button
                     key={t}
@@ -118,8 +118,8 @@ export default function LabProfilePage() {
             {activeTab === "portfolio" && (
                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {portfolio.map((item) => (
-                     <div key={item.id} className="bg-white rounded-[32px] border border-slate-100 shadow-sm overflow-hidden group hover:shadow-lg transition-all">
-                        <div className="aspect-square bg-slate-100 relative flex items-center justify-center text-6xl">
+                     <div key={item.id} className="bg-white dark:bg-slate-900 rounded-[32px] border border-slate-100 dark:border-slate-800 shadow-sm overflow-hidden group hover:shadow-lg transition-all">
+                        <div className="aspect-square bg-slate-100 dark:bg-slate-800/50 relative flex items-center justify-center text-6xl transition-colors">
                            {item.type === "3D" ? (
                              <div className="w-full h-full">
                                 <STLViewer url="data:model/stl;base64,c29saWQgY3ViZSBmYWNldCBub3JtYWwgMCAwIDAKb3V0ZXIgbG9vcAp2ZXJ0ZXggMCAwIDAKdmVydGV4IDEgMCAwCnZlcnRleCAxIDEgMAplbmRsb29wCmVuZGZhY2V0CmZhY2V0IG5vcm1hbCAwIDAgMApvdXRlciBsb29wCnZlcnRleCAwIDAgMAp2ZXJ0ZXggMSAxIDAKdmVydGV4IDAgMSAwCmVuZGxvb3AKZW5kZmFjZXQKZW5kc29saWQgY3ViZQ==" />
@@ -127,12 +127,12 @@ export default function LabProfilePage() {
                            ) : (
                              <span>{item.img}</span>
                            )}
-                           <div className="absolute top-4 right-4 bg-white/80 backdrop-blur-sm px-3 py-1 rounded-lg text-[10px] font-black text-slate-900 border border-white">
+                           <div className="absolute top-4 right-4 bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm px-3 py-1 rounded-lg text-[10px] font-black text-slate-900 dark:text-slate-100 border border-white dark:border-slate-700">
                               {item.type}
                            </div>
                         </div>
                         <div className="p-6">
-                           <h4 className="font-bold text-slate-900">{item.title}</h4>
+                           <h4 className="font-bold text-slate-900 dark:text-slate-100">{item.title}</h4>
                         </div>
                      </div>
                   ))}
@@ -142,15 +142,15 @@ export default function LabProfilePage() {
             {activeTab === "reviews" && (
                <div className="space-y-4">
                   {[1, 2].map((i) => (
-                     <div key={i} className="bg-white p-6 rounded-[24px] border border-slate-100 shadow-sm flex gap-4">
-                        <div className="w-12 h-12 bg-slate-100 rounded-2xl flex-shrink-0" />
+                     <div key={i} className="bg-white dark:bg-slate-900 p-6 rounded-[24px] border border-slate-100 dark:border-slate-800 shadow-sm flex gap-4 transition-colors">
+                        <div className="w-12 h-12 bg-slate-100 dark:bg-slate-800 rounded-2xl flex-shrink-0" />
                         <div>
                            <div className="flex justify-between items-center mb-2">
-                              <h5 className="font-bold text-slate-900">Dr. Mehmet Yılmaz</h5>
+                              <h5 className="font-bold text-slate-900 dark:text-slate-100">Dr. Mehmet Yılmaz</h5>
                               <span className="text-amber-500 font-bold text-sm">⭐ 5.0</span>
                            </div>
-                           <p className="text-sm text-slate-500 italic">"İşçilik kalitesi ve iletişim hızı gerçekten çok başarılı. Özellikle estetik vakalarda çok güveniyorum."</p>
-                           <div className="text-[10px] text-slate-400 font-bold mt-2 uppercase tracking-widest">1 Ay Önce</div>
+                           <p className="text-sm text-slate-500 dark:text-slate-400 italic">"İşçilik kalitesi ve iletişim hızı gerçekten çok başarılı. Özellikle estetik vakalarda çok güveniyorum."</p>
+                           <div className="text-[10px] text-slate-400 dark:text-slate-500 font-bold mt-2 uppercase tracking-widest">1 Ay Önce</div>
                         </div>
                      </div>
                   ))}
