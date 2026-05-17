@@ -1,0 +1,136 @@
+// prisma/schema.prisma
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  CUSTOMER
+  PRODUCER
+  ADMIN
+  SUPERADMIN
+}
+
+enum OrderStatus {
+  PENDING
+  BID_SUBMITTED
+  ACCEPTED
+  IN_PRODUCTION
+  SHIPPED
+  COMPLETED
+  CANCELLED
+  REVISION_REQUESTED
+}
+
+model User {
+  id               String    @id @default(uuid())
+  email            String    @unique
+  password         String
+  role             UserRole  @default(CUSTOMER)
+  profile          Profile?
+  orders           Order[]   @relation("CustomerOrders")
+  productions      Order[]   @relation("ProducerOrders")
+  sentMessages     Message[] @relation("SentMessages")
+  receivedMessages Message[] @relation("ReceivedMessages")
+  bids             Bid[]
+  notifications    Notification[]
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+}
+
+model Profile {
+  id            String   @id @default(uuid())
+  userId        String   @unique
+  user          User     @relation(fields: [userId], references: [id])
+  fullName      String
+  clinicName    String?
+  address       String?
+  phone         String?
+  avatarUrl     String?
+  specialties   String[]
+  rating        Float    @default(0)
+  isVerified    Boolean  @default(false)
+}
+
+model Order {
+  id          String      @id @default(uuid())
+  customerId  String
+  customer    User        @relation("CustomerOrders", fields: [customerId], references: [id])
+  producerId  String?
+  producer    User?       @relation("ProducerOrders", fields: [producerId], references: [id])
+  category    String
+  description String
+  deadline    DateTime
+  budget      Float?
+  urgency     String      @default("NORMAL")
+  status      OrderStatus @default(PENDING)
+  totalAmount Float?
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  files       File[]
+  payments    Payment[]
+  messages    Message[]
+  bids        Bid[]
+}
+
+model Bid {
+  id           String      @id @default(uuid())
+  orderId      String
+  order        Order       @relation(fields: [orderId], references: [id])
+  producerId   String
+  producer     User        @relation(fields: [producerId], references: [id])
+  amount       Float
+  deliveryDate DateTime
+  note         String?
+  status       BidStatus   @default(PENDING)
+  createdAt    DateTime    @default(now())
+}
+
+model File {
+  id        String   @id @default(uuid())
+  orderId   String
+  order     Order    @relation(fields: [orderId], references: [id])
+  url       String
+  name      String
+  type      String
+  size      Int
+  createdAt DateTime @default(now())
+}
+
+model Payment {
+  id            String   @id @default(uuid())
+  orderId       String
+  order         Order    @relation(fields: [orderId], references: [id])
+  amount        Decimal
+  status        String   // PENDING, COMPLETED, REFUNDED
+  provider      String   // IYZICO, STRIPE, PAYTR
+  providerId    String?
+  createdAt     DateTime @default(now())
+}
+
+model Message {
+  id          String   @id @default(uuid())
+  senderId    String
+  sender      User     @relation("SentMessages", fields: [senderId], references: [id])
+  recipientId String
+  recipient   User     @relation("ReceivedMessages", fields: [recipientId], references: [id])
+  content     String
+  fileUrl     String?
+  isRead      Boolean  @default(false)
+  createdAt   DateTime @default(now())
+}
+
+model Notification {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  type      String   // ORDER_UPDATE, NEW_BID, NEW_MESSAGE
+  message   String
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
