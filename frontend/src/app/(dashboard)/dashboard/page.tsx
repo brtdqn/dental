@@ -154,18 +154,18 @@ export default function DashboardPage() {
 
       {/* Quick Access / Banners */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-6">
-         <div className="bg-gradient-to-br from-blue-600 to-indigo-700 rounded-3xl p-8 text-white relative overflow-hidden group cursor-pointer hover:shadow-2xl hover:shadow-blue-500/20 transition-all">
+         <Link href="/dashboard/orders/new" className="bg-gradient-to-br from-blue-600 to-indigo-700 rounded-3xl p-8 text-white relative overflow-hidden group cursor-pointer hover:shadow-2xl hover:shadow-blue-500/20 transition-all block">
             <div className="relative z-10">
                <h3 className="text-2xl font-black mb-2">3D Modellerinizi Yükleyin</h3>
-               <p className="text-blue-100 mb-6 max-w-xs">STL dosyalarınızı anında yükleyip yüzlerce laboratuvardan otomatik teklif alın.</p>
+               <p className="text-blue-100 mb-6 max-w-xs">STL dosyalarınızı aninda yükleyip yüzlerce laboratuvardan otomatik teklif alın.</p>
                <div className="inline-flex items-center gap-2 bg-white text-blue-600 px-6 py-3 rounded-xl font-bold group-hover:bg-blue-50 transition-colors">
                  Hızlı Fiyat Al <ChevronRight size={18} />
                </div>
             </div>
             <div className="absolute -right-10 -bottom-10 text-[150px] opacity-20 group-hover:scale-110 transition-transform duration-500">📤</div>
-         </div>
+         </Link>
          
-         <div className="bg-gradient-to-br from-emerald-500 to-teal-600 rounded-3xl p-8 text-white relative overflow-hidden group cursor-pointer hover:shadow-2xl hover:shadow-emerald-500/20 transition-all">
+         <Link href="/dashboard/explore?category=Acil" className="bg-gradient-to-br from-emerald-500 to-teal-600 rounded-3xl p-8 text-white relative overflow-hidden group cursor-pointer hover:shadow-2xl hover:shadow-emerald-500/20 transition-all block">
             <div className="relative z-10">
                <h3 className="text-2xl font-black mb-2">Acil İşleriniz Mi Var?</h3>
                <p className="text-emerald-100 mb-6 max-w-xs">24 saat içinde teslimat yapabilen seçkin laboratuvarları keşfedin.</p>
@@ -174,7 +174,7 @@ export default function DashboardPage() {
                </div>
             </div>
             <div className="absolute -right-10 -bottom-10 text-[150px] opacity-20 group-hover:scale-110 transition-transform duration-500">⚡</div>
-         </div>
+         </Link>
       </div>
       
     </div>

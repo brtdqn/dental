@@ -21,6 +21,17 @@ export default function MessagesPage() {
   const router = useRouter();
   const [activeChat, setActiveChat] = useState(MOCK_CHATS[0]);
   const [msgInput, setMsgInput] = useState("");
+  const [messages, setMessages] = useState(MOCK_MESSAGES);
+
+  const handleSend = () => {
+    const trimmed = msgInput.trim();
+    if (!trimmed) return;
+    setMessages(prev => [
+      ...prev,
+      { id: Date.now(), sender: "Me", text: trimmed, time: new Date().toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' }), own: true }
+    ]);
+    setMsgInput("");
+  };
 
   useEffect(() => {
     if (!user) router.push("/login");
@@ -94,7 +105,7 @@ export default function MessagesPage() {
 
          {/* Messages Area */}
          <div className="flex-grow p-8 overflow-y-auto space-y-6 bg-slate-50/30">
-            {MOCK_MESSAGES.map((m) => (
+            {messages.map((m) => (
               <div key={m.id} className={`flex ${m.own ? "justify-end" : "justify-start"}`}>
                  <div className={`max-w-[70%] p-4 rounded-3xl text-sm shadow-sm ${
                    m.own 
@@ -121,9 +132,13 @@ export default function MessagesPage() {
                      className="w-full px-6 py-3 bg-slate-50 rounded-2xl border border-transparent focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10 outline-none transition-all text-sm font-medium"
                      value={msgInput}
                      onChange={(e) => setMsgInput(e.target.value)}
+                     onKeyDown={(e) => e.key === 'Enter' && handleSend()}
                   />
                </div>
-               <button className="px-8 py-3 bg-blue-600 text-white rounded-2xl font-bold hover:bg-blue-700 transition-all shadow-lg shadow-blue-100">
+               <button 
+                  onClick={handleSend}
+                  className="px-8 py-3 bg-blue-600 text-white rounded-2xl font-bold hover:bg-blue-700 transition-all shadow-lg shadow-blue-100"
+               >
                   Gönder
                </button>
             </div>
