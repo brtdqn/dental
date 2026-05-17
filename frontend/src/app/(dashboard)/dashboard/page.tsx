@@ -2,98 +2,162 @@
 
 import { useAuthStore } from "@/store/useAuthStore";
 import Link from "next/link";
+import { ArrowRight, Star, Clock, ShieldCheck, ChevronRight } from "lucide-react";
 
 export default function DashboardPage() {
   const { user } = useAuthStore();
 
-  const stats = [
-    { title: "Aktif İşler", value: "12", bg: "bg-blue-50", text: "text-blue-600", border: "border-blue-100", icon: "📦" },
-    { title: "Bekleyen Teklifler", value: "5", bg: "bg-amber-50", text: "text-amber-600", border: "border-amber-100", icon: "⏳" },
-    { title: "Tamamlanan İşler", value: "148", bg: "bg-emerald-50", text: "text-emerald-600", border: "border-emerald-100", icon: "✅" },
+  const featuredLabs = [
+    { id: 1, name: "Elite Dental Studio", rating: 4.9, reviews: 128, delivery: "3 Gün", tags: ["Zirkonyum", "Emax"], isPro: true, image: "🦷" },
+    { id: 2, name: "Modern Diş Lab", rating: 4.8, reviews: 85, delivery: "2 Gün", tags: ["İmplant Üstü"], isPro: false, image: "✨" },
+    { id: 3, name: "ProSmile Dijital", rating: 5.0, reviews: 42, delivery: "Hızlı", tags: ["Gülüş Tasarımı", "Lamine"], isPro: true, image: "👄" },
+    { id: 4, name: "Anadolu Seramik", rating: 4.7, reviews: 210, delivery: "4 Gün", tags: ["Porselen", "İskelet"], isPro: false, image: "🔧" },
   ];
 
   return (
-    <div className="space-y-8 animate-fade-in pb-20">
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-        <div>
-          <h1 className="text-3xl font-extrabold text-slate-900 dark:text-slate-100 transition-colors">Genel Bakış</h1>
-          <p className="text-slate-500 dark:text-slate-400 mt-1 transition-colors">Platformdaki aktivitelerinizin ve siparişlerinizin özeti.</p>
-        </div>
-        <div className="flex gap-3">
-           <Link href="/dashboard/orders/new" className="bg-blue-600 text-white px-6 py-3 rounded-2xl font-bold hover:bg-blue-700 transition-all shadow-lg shadow-blue-100 text-sm flex items-center gap-2">
-              <span>+</span> Yeni İş Talebi
-           </Link>
-           <Link href="/dashboard/explore" className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 px-6 py-3 rounded-2xl font-bold hover:bg-slate-50 dark:hover:bg-slate-700 transition-all text-sm">
-              Laboratuvar Keşfet
-           </Link>
+    <div className="space-y-12 pb-20 animate-fade-in">
+      
+      {/* Hero Banner Slider */}
+      <div className="relative rounded-[32px] overflow-hidden bg-gradient-to-r from-slate-900 to-slate-800 dark:from-black dark:to-slate-900 h-[300px] md:h-[400px] flex items-center shadow-2xl">
+        <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-orange-500/20 to-transparent mix-blend-overlay"></div>
+        <div className="absolute -right-20 -bottom-20 text-[300px] opacity-5 select-none pointer-events-none">🦷</div>
+        
+        <div className="relative z-10 px-8 md:px-16 max-w-2xl text-white space-y-6">
+           <div className="inline-block px-4 py-1.5 bg-orange-500/20 border border-orange-500/30 text-orange-400 font-bold text-xs rounded-full uppercase tracking-widest backdrop-blur-sm">
+             🔥 HAFTANIN FIRSATI
+           </div>
+           <h1 className="text-4xl md:text-5xl font-black leading-tight">
+             Elite Lab'da Tüm Zirkonyum İşlerinde <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-yellow-300">%20 İndirim</span>
+           </h1>
+           <p className="text-slate-300 text-lg">Bu hafta sonuna kadar vereceğiniz tüm siparişlerde geçerlidir. Hemen teklif alın, fırsatı kaçırmayın.</p>
+           <div className="flex gap-4 pt-2">
+             <Link href="/dashboard/explore/1" className="bg-orange-500 hover:bg-orange-600 text-white px-8 py-3.5 rounded-xl font-bold transition-all shadow-lg shadow-orange-500/30 hover:-translate-y-1">
+               Hemen İncele
+             </Link>
+             <Link href="/dashboard/explore" className="bg-white/10 hover:bg-white/20 backdrop-blur-md text-white px-8 py-3.5 rounded-xl font-bold transition-all border border-white/10">
+               Tüm Kampanyalar
+             </Link>
+           </div>
         </div>
       </div>
 
-      {/* Stats grid */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {stats.map((stat, i) => (
-          <div key={i} className={`bg-white dark:bg-slate-900 p-8 rounded-[32px] border border-slate-100 dark:border-slate-800 shadow-sm hover:shadow-xl hover:shadow-blue-500/5 dark:hover:shadow-blue-500/10 transition-all group flex items-center justify-between`}>
-            <div className="space-y-2">
-               <div className="text-slate-400 font-bold text-xs uppercase tracking-widest">{stat.title}</div>
-               <div className="text-4xl font-black text-slate-900 dark:text-slate-100 group-hover:scale-105 transition-all origin-left">{stat.value}</div>
-            </div>
-            <div className={`w-14 h-14 rounded-2xl ${stat.bg} ${stat.text} flex items-center justify-center text-2xl`}>
-               {stat.icon}
-            </div>
-          </div>
-        ))}
+      {/* Trust Badges */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8 border-y border-slate-100 dark:border-slate-800 py-8">
+         <div className="flex items-center gap-3 justify-center text-center md:text-left">
+           <ShieldCheck className="text-orange-500 w-10 h-10 flex-shrink-0 hidden md:block" />
+           <div>
+             <div className="font-bold text-slate-900 dark:text-white">Güvenli Ödeme</div>
+             <div className="text-xs text-slate-500">İş teslimine kadar paranız güvende</div>
+           </div>
+         </div>
+         <div className="flex items-center gap-3 justify-center text-center md:text-left">
+           <Clock className="text-orange-500 w-10 h-10 flex-shrink-0 hidden md:block" />
+           <div>
+             <div className="font-bold text-slate-900 dark:text-white">Zamanında Teslimat</div>
+             <div className="text-xs text-slate-500">Geciken işlerde iade garantisi</div>
+           </div>
+         </div>
+         <div className="flex items-center gap-3 justify-center text-center md:text-left">
+           <Star className="text-orange-500 w-10 h-10 flex-shrink-0 hidden md:block" />
+           <div>
+             <div className="font-bold text-slate-900 dark:text-white">Onaylı Laboratuvarlar</div>
+             <div className="text-xs text-slate-500">Sadece sertifikalı teknisyenler</div>
+           </div>
+         </div>
+         <div className="flex items-center gap-3 justify-center text-center md:text-left">
+           <div className="text-orange-500 w-10 h-10 flex-shrink-0 hidden md:flex items-center justify-center font-black text-2xl">7/24</div>
+           <div>
+             <div className="font-bold text-slate-900 dark:text-white">Canlı Destek</div>
+             <div className="text-xs text-slate-500">Platform üzerinden anında çözüm</div>
+           </div>
+         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* Recent Orders */}
-        <div className="lg:col-span-2 bg-white dark:bg-slate-900 p-8 rounded-[40px] border border-slate-100 dark:border-slate-800 shadow-sm space-y-6 transition-colors">
-          <div className="flex justify-between items-center">
-            <h3 className="text-xl font-bold text-slate-900 dark:text-slate-100">Son Siparişler</h3>
-            <Link href="/dashboard/orders" className="text-blue-600 dark:text-blue-400 text-sm font-bold hover:underline">Hepsini Gör</Link>
+      {/* Recommended Section (Horizontal Scroll) */}
+      <div className="space-y-6">
+        <div className="flex justify-between items-end">
+          <div>
+            <h2 className="text-2xl font-black text-slate-900 dark:text-white flex items-center gap-2">
+              Size Özel Önerilenler <span className="text-orange-500">★</span>
+            </h2>
+            <p className="text-slate-500 mt-1">Geçmiş siparişlerinize göre sizin için seçtiğimiz laboratuvarlar.</p>
           </div>
-          <div className="divide-y divide-slate-50 dark:divide-slate-800/50">
-            {[1, 2, 3].map((item) => (
-              <div key={item} className="py-5 flex items-center justify-between hover:bg-slate-50/50 dark:hover:bg-slate-800/30 transition-all rounded-2xl px-4 -mx-4 group">
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 bg-blue-50 dark:bg-blue-500/10 rounded-2xl flex items-center justify-center text-xl text-blue-600 dark:text-blue-400">🦷</div>
-                  <div>
-                    <div className="font-bold text-slate-900 dark:text-slate-100 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">Zirkonyum Kaplama #482{item}</div>
-                    <div className="text-xs text-slate-400 dark:text-slate-500 font-medium">Elite Dental Studio • 12 May 2026</div>
+          <Link href="/dashboard/explore" className="text-orange-500 font-bold hover:underline flex items-center gap-1 text-sm">
+            Tümünü Gör <ArrowRight size={16} />
+          </Link>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {featuredLabs.map((lab) => (
+            <div key={lab.id} className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-100 dark:border-slate-800 shadow-sm hover:shadow-xl hover:border-orange-500/30 transition-all group overflow-hidden flex flex-col relative">
+              {lab.isPro && (
+                <div className="absolute top-4 left-4 bg-orange-500 text-white text-[10px] font-black px-2 py-1 rounded-md z-10 shadow-lg">
+                  PRO
+                </div>
+              )}
+              <div className="h-40 bg-slate-50 dark:bg-slate-800/50 flex items-center justify-center text-6xl relative overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+                <span className="group-hover:scale-110 transition-transform duration-500 relative z-10">{lab.image}</span>
+              </div>
+              <div className="p-5 space-y-3 flex-grow flex flex-col justify-between">
+                <div>
+                  <h3 className="font-bold text-slate-900 dark:text-white text-lg truncate group-hover:text-orange-500 transition-colors">{lab.name}</h3>
+                  <div className="flex items-center gap-2 mt-1">
+                    <div className="flex items-center text-amber-500 text-sm font-bold">
+                      <Star size={14} className="fill-amber-500 mr-1" />
+                      {lab.rating}
+                    </div>
+                    <span className="text-xs text-slate-400">({lab.reviews})</span>
                   </div>
                 </div>
-                <span className="px-3 py-1 rounded-full bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 text-[10px] font-bold uppercase tracking-wider">
-                  Üretimde
-                </span>
-              </div>
-            ))}
-          </div>
-        </div>
+                
+                <div className="flex flex-wrap gap-1">
+                  {lab.tags.map(tag => (
+                    <span key={tag} className="text-[10px] px-2 py-1 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 rounded-md font-medium">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
 
-        {/* Financial Mini Graph */}
-        <div className="bg-slate-900 dark:bg-slate-800 p-8 rounded-[40px] text-white flex flex-col justify-between shadow-2xl relative overflow-hidden aspect-square lg:aspect-auto">
-          <div className="absolute top-0 right-0 w-48 h-48 bg-blue-600 rounded-full blur-[100px] opacity-40" />
-          <div className="relative z-10 space-y-4">
-             <div className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Aylık Harcama Grafiği</div>
-             <div className="text-3xl font-black">₺12,450</div>
-             <div className="text-xs text-emerald-400 font-bold">↑ Geçen aya göre %8 daha az maliyet</div>
-          </div>
-          
-          {/* Custom Mini Bar Chart */}
-          <div className="relative z-10 flex items-end justify-between h-32 pt-8">
-             {[40, 60, 45, 80, 55, 95, 75].map((h, i) => (
-               <div key={i} className="flex flex-col items-center gap-2 group cursor-pointer">
-                  <div className="w-4 bg-white/10 rounded-lg h-24 relative overflow-hidden group-hover:bg-white/20 transition-colors">
-                     <div 
-                        style={{ height: `${h}%` }} 
-                        className="absolute bottom-0 left-0 w-full bg-blue-500 rounded-lg group-hover:bg-blue-400 transition-all duration-500" 
-                     />
-                  </div>
-                  <span className="text-[9px] text-slate-500 font-bold">P{i+1}</span>
-               </div>
-             ))}
-          </div>
+                <div className="pt-4 border-t border-slate-50 dark:border-slate-800/50 flex items-center justify-between">
+                   <div className="text-xs font-bold text-slate-500">
+                     Teslimat: <span className="text-slate-900 dark:text-white">{lab.delivery}</span>
+                   </div>
+                   <Link href={`/dashboard/orders/new?producerId=${lab.id}`} className="bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-4 py-2 rounded-xl text-xs font-bold hover:bg-orange-500 dark:hover:bg-orange-500 hover:text-white transition-colors">
+                     İş Gönder
+                   </Link>
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
+
+      {/* Quick Access / Banners */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-6">
+         <div className="bg-gradient-to-br from-blue-600 to-indigo-700 rounded-3xl p-8 text-white relative overflow-hidden group cursor-pointer hover:shadow-2xl hover:shadow-blue-500/20 transition-all">
+            <div className="relative z-10">
+               <h3 className="text-2xl font-black mb-2">3D Modellerinizi Yükleyin</h3>
+               <p className="text-blue-100 mb-6 max-w-xs">STL dosyalarınızı anında yükleyip yüzlerce laboratuvardan otomatik teklif alın.</p>
+               <div className="inline-flex items-center gap-2 bg-white text-blue-600 px-6 py-3 rounded-xl font-bold group-hover:bg-blue-50 transition-colors">
+                 Hızlı Fiyat Al <ChevronRight size={18} />
+               </div>
+            </div>
+            <div className="absolute -right-10 -bottom-10 text-[150px] opacity-20 group-hover:scale-110 transition-transform duration-500">📤</div>
+         </div>
+         
+         <div className="bg-gradient-to-br from-emerald-500 to-teal-600 rounded-3xl p-8 text-white relative overflow-hidden group cursor-pointer hover:shadow-2xl hover:shadow-emerald-500/20 transition-all">
+            <div className="relative z-10">
+               <h3 className="text-2xl font-black mb-2">Acil İşleriniz Mi Var?</h3>
+               <p className="text-emerald-100 mb-6 max-w-xs">24 saat içinde teslimat yapabilen seçkin laboratuvarları keşfedin.</p>
+               <div className="inline-flex items-center gap-2 bg-white text-emerald-600 px-6 py-3 rounded-xl font-bold group-hover:bg-emerald-50 transition-colors">
+                 Acil Laboratuvarlar <ChevronRight size={18} />
+               </div>
+            </div>
+            <div className="absolute -right-10 -bottom-10 text-[150px] opacity-20 group-hover:scale-110 transition-transform duration-500">⚡</div>
+         </div>
+      </div>
+      
     </div>
   );
 }
