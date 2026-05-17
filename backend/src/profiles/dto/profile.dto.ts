@@ -11,11 +11,11 @@ export class UpdateProfileDto {
 
   @IsString()
   @IsOptional()
-  city?: string;
+  address?: string;
 
   @IsString()
   @IsOptional()
-  bio?: string;
+  clinicName?: string;
 
   @IsOptional()
   specialties?: string[];

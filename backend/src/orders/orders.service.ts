@@ -18,7 +18,7 @@ export class OrdersService {
       data: {
         customerId,
         category: dto.category,
-        description: dto.description,
+        description: dto.description || '',
         deadline: new Date(dto.deadline),
         budget: dto.budget,
         urgency: dto.urgency || 'NORMAL',

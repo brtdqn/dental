@@ -10,9 +10,9 @@ export class ProfilesController {
   @Get('producers')
   findProducers(
     @Query('specialty') specialty?: string,
-    @Query('city') city?: string,
+    @Query('address') address?: string,
   ) {
-    return this.profilesService.findProducers(specialty, city);
+    return this.profilesService.findProducers(specialty, address);
   }
 
   @UseGuards(JwtAuthGuard)

@@ -17,19 +17,19 @@ export class ProfilesService {
       data: {
         fullName: dto.fullName,
         phone: dto.phone,
-        city: dto.city,
-        bio: dto.bio,
+        address: dto.address,
+        clinicName: dto.clinicName,
         specialties: dto.specialties,
       },
     });
   }
 
-  async findProducers(specialty?: string, city?: string) {
+  async findProducers(specialty?: string, address?: string) {
     return this.prisma.user.findMany({
       where: {
         role: 'PRODUCER',
         profile: {
-          city: city || undefined,
+          address: address || undefined,
           specialties: specialty ? { has: specialty } : undefined,
         },
       },
