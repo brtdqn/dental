@@ -1,12 +1,20 @@
 "use client";
 
 import { useParams, useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useAuthStore } from "@/store/useAuthStore";
 
 export default function CheckoutPage() {
   const { id } = useParams();
   const router = useRouter();
+  const { user } = useAuthStore();
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (!user) router.push("/login");
+  }, [user, router]);
+
+  if (!user) return null;
 
   const orderSummary = {
     title: "Zirkonyum Kaplama #4821",

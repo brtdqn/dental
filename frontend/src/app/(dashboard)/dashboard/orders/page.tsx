@@ -1,6 +1,9 @@
 "use client";
 
 import Link from "next/link";
+import { useAuthStore } from "@/store/useAuthStore";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 const MOCK_ORDERS = [
   { id: "1", title: "Zirkonyum Kaplama #4821", date: "12.05.2026", status: "Üretimde", price: "₺4,500", clinic: "Dr. Selin Kaya" },
@@ -16,6 +19,15 @@ const STATUS_COLORS: Record<string, string> = {
 };
 
 export default function OrdersListPage() {
+  const { user } = useAuthStore();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!user) router.push("/login");
+  }, [user, router]);
+
+  if (!user) return null;
+
   return (
     <div className="space-y-8 animate-fade-in">
       <div className="flex justify-between items-center">

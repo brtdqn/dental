@@ -35,9 +35,7 @@ export default function DashboardLayout({
   const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
-    if (!user) {
-      router.push("/login");
-    } else {
+    if (user) {
       const token = localStorage.getItem('auth-storage') 
         ? JSON.parse(localStorage.getItem('auth-storage')!).state.token 
         : null;
@@ -46,9 +44,7 @@ export default function DashboardLayout({
       }
     }
     return () => disconnect();
-  }, [user, router, connect, disconnect]);
-
-  if (!user) return null;
+  }, [user, connect, disconnect]);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -100,89 +96,102 @@ export default function DashboardLayout({
 
              <ThemeToggle />
 
-             {/* Notifications */}
-             <div className="relative">
-               <button 
-                  onClick={() => setShowNotifications(!showNotifications)}
-                  className="p-2.5 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all relative flex flex-col items-center gap-1 group"
-               >
-                  <Bell size={20} className="group-hover:text-orange-500 transition-colors" />
-                  {notifications.length > 0 && (
-                    <span className="absolute top-1 right-1 w-4 h-4 bg-red-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center border-2 border-white dark:border-slate-900">
-                      {notifications.length}
-                    </span>
-                  )}
-               </button>
-
-               {showNotifications && (
-                 <div className="absolute top-14 right-0 w-80 bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-100 dark:border-slate-800 py-2 z-50">
-                   <div className="px-4 py-3 border-b border-slate-100 dark:border-slate-800 flex justify-between items-center">
-                      <h3 className="font-bold text-slate-900 dark:text-white">Bildirimler</h3>
-                      <button onClick={() => toast.success("Okundu işaretlendi")} className="text-xs text-orange-500 font-bold hover:underline">Tümünü Oku</button>
-                   </div>
-                   <div className="max-h-80 overflow-y-auto">
-                      {notifications.length > 0 ? notifications.map((n) => (
-                        <div key={n.id} className="p-4 hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer border-b border-slate-50 dark:border-slate-800/50">
-                           <p className="text-sm text-slate-700 dark:text-slate-300">{n.message}</p>
-                           <span className="text-[10px] text-slate-400 mt-1 block">Az önce</span>
-                        </div>
-                      )) : (
-                        <div className="p-8 text-center text-slate-400 text-sm">Yeni bildirim yok</div>
+             {user ? (
+               <>
+                 {/* Notifications */}
+                 <div className="relative">
+                   <button 
+                      onClick={() => setShowNotifications(!showNotifications)}
+                      className="p-2.5 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all relative flex flex-col items-center gap-1 group"
+                   >
+                      <Bell size={20} className="group-hover:text-orange-500 transition-colors" />
+                      {notifications.length > 0 && (
+                        <span className="absolute top-1 right-1 w-4 h-4 bg-red-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center border-2 border-white dark:border-slate-900">
+                          {notifications.length}
+                        </span>
                       )}
-                   </div>
+                   </button>
+
+                   {showNotifications && (
+                     <div className="absolute top-14 right-0 w-80 bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-100 dark:border-slate-800 py-2 z-50">
+                       <div className="px-4 py-3 border-b border-slate-100 dark:border-slate-800 flex justify-between items-center">
+                          <h3 className="font-bold text-slate-900 dark:text-white">Bildirimler</h3>
+                          <button onClick={() => toast.success("Okundu işaretlendi")} className="text-xs text-orange-500 font-bold hover:underline">Tümünü Oku</button>
+                       </div>
+                       <div className="max-h-80 overflow-y-auto">
+                          {notifications.length > 0 ? notifications.map((n) => (
+                            <div key={n.id} className="p-4 hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer border-b border-slate-50 dark:border-slate-800/50">
+                               <p className="text-sm text-slate-700 dark:text-slate-300">{n.message}</p>
+                               <span className="text-[10px] text-slate-400 mt-1 block">Az önce</span>
+                            </div>
+                          )) : (
+                            <div className="p-8 text-center text-slate-400 text-sm">Yeni bildirim yok</div>
+                          )}
+                       </div>
+                     </div>
+                   )}
                  </div>
-               )}
-             </div>
 
-             {/* Orders */}
-             <Link href="/dashboard/orders" className="p-2.5 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all flex flex-col items-center gap-0.5 group hidden sm:flex">
-                <Package size={20} className="group-hover:text-orange-500 transition-colors" />
-                <span className="text-[10px] font-bold">Siparişlerim</span>
-             </Link>
+                 {/* Orders */}
+                 <Link href="/dashboard/orders" className="p-2.5 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all flex flex-col items-center gap-0.5 group hidden sm:flex">
+                    <Package size={20} className="group-hover:text-orange-500 transition-colors" />
+                    <span className="text-[10px] font-bold">Siparişlerim</span>
+                 </Link>
 
-             {/* Account Menu */}
-             <div className="relative">
-                <button 
-                  onClick={() => setShowAccountMenu(!showAccountMenu)}
-                  className="p-2.5 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all flex items-center gap-2 group border border-transparent hover:border-slate-200 dark:hover:border-slate-700"
-                >
-                   <User size={20} className="group-hover:text-orange-500 transition-colors" />
-                   <div className="hidden lg:flex flex-col items-start text-left">
-                      <span className="text-[10px] text-slate-400 font-bold leading-none">Giriş Yaptınız</span>
-                      <span className="text-xs font-bold text-slate-900 dark:text-white truncate w-24 leading-tight">{user.email.split('@')[0]}</span>
-                   </div>
-                   <ChevronDown size={14} className="hidden lg:block text-slate-400" />
-                </button>
+                 {/* Account Menu */}
+                 <div className="relative">
+                    <button 
+                      onClick={() => setShowAccountMenu(!showAccountMenu)}
+                      className="p-2.5 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all flex items-center gap-2 group border border-transparent hover:border-slate-200 dark:hover:border-slate-700"
+                    >
+                       <User size={20} className="group-hover:text-orange-500 transition-colors" />
+                       <div className="hidden lg:flex flex-col items-start text-left">
+                          <span className="text-[10px] text-slate-400 font-bold leading-none">Giriş Yaptınız</span>
+                          <span className="text-xs font-bold text-slate-900 dark:text-white truncate w-24 leading-tight">{user.email.split('@')[0]}</span>
+                       </div>
+                       <ChevronDown size={14} className="hidden lg:block text-slate-400" />
+                    </button>
 
-                {showAccountMenu && (
-                  <div className="absolute top-14 right-0 w-56 bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-100 dark:border-slate-800 py-2 z-50">
-                     <div className="px-4 py-3 border-b border-slate-100 dark:border-slate-800 mb-2">
-                        <div className="font-bold text-slate-900 dark:text-white truncate">{user.email}</div>
-                        <div className="text-xs text-slate-500 dark:text-slate-400">{user.role}</div>
-                     </div>
-                     <Link href="/dashboard/profile" className="flex items-center gap-3 px-4 py-2 text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-orange-500">
-                        <User size={16} /> Kullanıcı Bilgilerim
-                     </Link>
-                     <Link href="/dashboard/orders" className="flex items-center gap-3 px-4 py-2 text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-orange-500 sm:hidden">
-                        <Package size={16} /> Siparişlerim
-                     </Link>
-                     <Link href="/dashboard/wallet" className="flex items-center gap-3 px-4 py-2 text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-orange-500">
-                        <Wallet size={16} /> Cüzdanım
-                     </Link>
-                     <div className="border-t border-slate-100 dark:border-slate-800 mt-2 pt-2">
-                        <button onClick={() => { logout(); router.push("/"); }} className="w-full flex items-center gap-3 px-4 py-2 text-sm text-red-600 hover:bg-red-50 dark:hover:bg-red-500/10">
-                           <LogOut size={16} /> Çıkış Yap
-                        </button>
-                     </div>
-                  </div>
-                )}
-             </div>
-             
-             {/* New Order CTA */}
-             <Link href="/dashboard/orders/new" className="hidden sm:flex items-center gap-2 bg-gradient-to-r from-orange-500 to-orange-600 text-white px-4 py-2.5 rounded-xl font-bold hover:shadow-lg hover:shadow-orange-500/30 transition-all hover:-translate-y-0.5">
-                <ShoppingCart size={18} />
-                <span className="text-sm">Yeni İş</span>
-             </Link>
+                    {showAccountMenu && (
+                      <div className="absolute top-14 right-0 w-56 bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-100 dark:border-slate-800 py-2 z-50">
+                         <div className="px-4 py-3 border-b border-slate-100 dark:border-slate-800 mb-2">
+                            <div className="font-bold text-slate-900 dark:text-white truncate">{user.email}</div>
+                            <div className="text-xs text-slate-500 dark:text-slate-400">{user.role}</div>
+                         </div>
+                         <Link href="/dashboard/profile" className="flex items-center gap-3 px-4 py-2 text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-orange-500">
+                            <User size={16} /> Kullanıcı Bilgilerim
+                         </Link>
+                         <Link href="/dashboard/orders" className="flex items-center gap-3 px-4 py-2 text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-orange-500 sm:hidden">
+                            <Package size={16} /> Siparişlerim
+                         </Link>
+                         <Link href="/dashboard/wallet" className="flex items-center gap-3 px-4 py-2 text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-orange-500">
+                            <Wallet size={16} /> Cüzdanım
+                         </Link>
+                         <div className="border-t border-slate-100 dark:border-slate-800 mt-2 pt-2">
+                            <button onClick={() => { logout(); router.push("/"); }} className="w-full flex items-center gap-3 px-4 py-2 text-sm text-red-600 hover:bg-red-50 dark:hover:bg-red-500/10">
+                               <LogOut size={16} /> Çıkış Yap
+                            </button>
+                         </div>
+                      </div>
+                    )}
+                 </div>
+                 
+                 {/* New Order CTA */}
+                 <Link href="/dashboard/orders/new" className="hidden sm:flex items-center gap-2 bg-gradient-to-r from-orange-500 to-orange-600 text-white px-4 py-2.5 rounded-xl font-bold hover:shadow-lg hover:shadow-orange-500/30 transition-all hover:-translate-y-0.5">
+                    <ShoppingCart size={18} />
+                    <span className="text-sm">Yeni İş</span>
+                 </Link>
+               </>
+             ) : (
+               <div className="flex items-center gap-2 md:gap-4 ml-2">
+                 <Link href="/login" className="text-sm font-bold text-slate-700 dark:text-slate-300 hover:text-orange-500 transition-colors hidden sm:block">
+                   Giriş Yap
+                 </Link>
+                 <Link href="/register" className="bg-orange-500 text-white px-4 py-2 rounded-xl text-sm font-bold hover:bg-orange-600 transition-colors shadow-lg shadow-orange-500/20">
+                   Üye Ol
+                 </Link>
+               </div>
+             )}
           </div>
         </div>
 

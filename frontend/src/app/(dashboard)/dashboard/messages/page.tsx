@@ -1,6 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { useAuthStore } from "@/store/useAuthStore";
 
 const MOCK_CHATS = [
   { id: "1", name: "Elite Dental Studio", lastMsg: "Modeli inceledim, yarın üretime alıyoruz.", time: "10:20", unread: 2, online: true },
@@ -15,8 +17,16 @@ const MOCK_MESSAGES = [
 ];
 
 export default function MessagesPage() {
+  const { user } = useAuthStore();
+  const router = useRouter();
   const [activeChat, setActiveChat] = useState(MOCK_CHATS[0]);
   const [msgInput, setMsgInput] = useState("");
+
+  useEffect(() => {
+    if (!user) router.push("/login");
+  }, [user, router]);
+
+  if (!user) return null;
 
   return (
     <div className="h-[calc(100vh-160px)] flex gap-6 animate-fade-in">

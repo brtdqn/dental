@@ -1,11 +1,21 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useAuthStore } from "@/store/useAuthStore";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+import { User, Settings, Shield, Bell } from "lucide-react";
 
 export default function ProfilePage() {
   const { user } = useAuthStore();
+  const router = useRouter();
   const [activeTab, setActiveTab] = useState("general");
+
+  useEffect(() => {
+    if (!user) router.push("/login");
+  }, [user, router]);
+
+  if (!user) return null;
 
   const [notifPreferences, setNotifPreferences] = useState({
     orderUpdates: true,

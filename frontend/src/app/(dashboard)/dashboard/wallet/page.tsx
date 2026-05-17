@@ -1,9 +1,19 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { useAuthStore } from "@/store/useAuthStore";
 
 export default function WalletPage() {
+  const { user } = useAuthStore();
+  const router = useRouter();
   const [balance, setBalance] = useState("12,450.00");
+
+  useEffect(() => {
+    if (!user) router.push("/login");
+  }, [user, router]);
+
+  if (!user) return null;
 
   const transactions = [
     { id: 1, type: "OUT", amount: "₺4,500.00", title: "Zirkonyum Kaplama Ödemesi", date: "12 May 2026", status: "Tamamlandı" },

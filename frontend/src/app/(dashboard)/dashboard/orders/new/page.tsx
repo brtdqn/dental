@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { useAuthStore } from "@/store/useAuthStore";
 
 const CATEGORIES = [
   "Zirkonyum", "Emax", "Full Denture", "İmplant Üstü", "Ortodonti", 
@@ -9,6 +10,8 @@ const CATEGORIES = [
 ];
 
 export default function NewOrderPage() {
+  const { user } = useAuthStore();
+  const router = useRouter();
   const [form, setForm] = useState({
     category: "",
     description: "",
@@ -17,7 +20,12 @@ export default function NewOrderPage() {
     budget: "",
   });
   const [files, setFiles] = useState<File[]>([]);
-  const router = useRouter();
+
+  useEffect(() => {
+    if (!user) router.push("/login");
+  }, [user, router]);
+
+  if (!user) return null;
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {

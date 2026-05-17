@@ -3,15 +3,23 @@
 import STLViewer from "@/components/viewer/STLViewer";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useAuthStore } from "@/store/useAuthStore";
+import { useRouter } from "next/navigation";
 
 import { toast } from "sonner";
 
 export default function OrderDetailPage() {
   const { id } = useParams();
   const { user } = useAuthStore();
+  const router = useRouter();
   const [productionStatus, setProductionStatus] = useState("Üretimde");
+
+  useEffect(() => {
+    if (!user) router.push("/login");
+  }, [user, router]);
+
+  if (!user) return null;
 
   // Mock order data
   const order = {
