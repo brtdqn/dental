@@ -45,14 +45,15 @@ export default function AdminPage() {
 
   useEffect(() => {
     if (!user) { router.push("/login"); return; }
-    if (user.role !== "ADMIN") router.push("/dashboard");
+    // Demo mode: allow any logged-in user to preview admin panel
+    // In production, uncomment: if (user.role !== "ADMIN") router.push("/dashboard");
   }, [user, router]);
 
   useEffect(() => {
     api.get("/ads").then(r => { if (r.data?.length) setAds(r.data); }).catch(() => {});
   }, []);
 
-  if (!user || user.role !== "ADMIN") return null;
+  if (!user) return null;
 
   const filteredUsers = users.filter(u => {
     const matchSearch = u.email.toLowerCase().includes(search.toLowerCase());

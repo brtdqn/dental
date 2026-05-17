@@ -39,6 +39,14 @@ export default function LoginPage() {
     router.push("/dashboard");
   };
 
+  const handleAdminDemoLogin = () => {
+    setAuth(
+      { id: "admin-demo", email: "admin@dentalpazar.com", role: "ADMIN" },
+      "mock-admin-token"
+    );
+    router.push("/admin");
+  };
+
   return (
     <div className="bg-white dark:bg-slate-900 p-8 rounded-3xl shadow-xl border border-slate-100 dark:border-slate-800 animate-fade-in">
       <div className="mb-8 text-center">
@@ -97,7 +105,14 @@ export default function LoginPage() {
             onClick={handleDemoLogin}
             className="w-full bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white py-3.5 rounded-2xl font-bold hover:bg-slate-200 dark:hover:bg-slate-700 transition-all active:scale-95 flex items-center justify-center gap-2"
           >
-            🚀 Demo Modu ile Gir (Hızlı)
+            🚀 Demo Modu ile Gir (Hekim)
+          </button>
+          <button
+            type="button"
+            onClick={handleAdminDemoLogin}
+            className="w-full bg-red-50 dark:bg-red-500/10 text-red-600 dark:text-red-400 border border-red-200 dark:border-red-500/20 py-3.5 rounded-2xl font-bold hover:bg-red-100 dark:hover:bg-red-500/20 transition-all active:scale-95 flex items-center justify-center gap-2"
+          >
+            🛡️ Admin Paneli Demo
           </button>
         </div>
       </form>
