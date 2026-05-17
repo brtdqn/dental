@@ -2,7 +2,7 @@
 
 import React, { useRef, useState, useEffect, Suspense } from 'react';
 import { Canvas } from '@react-three/fiber';
-import { STLLoader } from 'three/examples/jsm/loaders/STLLoader';
+import { STLLoader } from 'three-stdlib';
 import { OrbitControls, Stage, Center } from '@react-three/drei';
 import * as THREE from 'three';
 
