@@ -2,22 +2,48 @@
 
 import * as React from "react";
 import { Moon, Sun } from "lucide-react";
-import { useTheme } from "next-themes";
 
-export function ThemeToggle() {
-  const { resolvedTheme, setTheme } = useTheme();
+// Custom theme hook - next-themes bypass
+function useTheme() {
+  const [theme, setThemeState] = React.useState<"light" | "dark">("light");
   const [mounted, setMounted] = React.useState(false);
 
   React.useEffect(() => {
+    const saved = localStorage.getItem("dis-theme") as "light" | "dark" | null;
+    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    const initial = saved ?? (prefersDark ? "dark" : "light");
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setThemeState(initial);
+    if (initial === "dark") {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setMounted(true);
   }, []);
 
+  const setTheme = React.useCallback((next: "light" | "dark") => {
+    setThemeState(next);
+    localStorage.setItem("dis-theme", next);
+    if (next === "dark") {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+  }, []);
+
+  return { theme, setTheme, mounted };
+}
+
+export function ThemeToggle() {
+  const { theme, setTheme, mounted } = useTheme();
+
   if (!mounted) {
-    return <div className="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800 animate-pulse" />;
+    return <div className="w-10 h-10 rounded-xl bg-slate-100 animate-pulse" />;
   }
 
-  const isDark = resolvedTheme === "dark";
+  const isDark = theme === "dark";
 
   return (
     <button
