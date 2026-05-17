@@ -125,6 +125,8 @@ model Message {
   sender      User     @relation("SentMessages", fields: [senderId], references: [id])
   recipientId String
   recipient   User     @relation("ReceivedMessages", fields: [recipientId], references: [id])
+  orderId     String?
+  order       Order?   @relation(fields: [orderId], references: [id])
   content     String
   fileUrl     String?
   isRead      Boolean  @default(false)
